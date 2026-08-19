@@ -15,6 +15,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import get_settings
 from app.core.logging import RequestIdMiddleware, configure_logging
+from app.core import storage
+from app import models
 
 settings = get_settings()
 configure_logging(settings.log_level)
@@ -24,6 +26,7 @@ logger = logging.getLogger("collabai")
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logger.info("CollabAI API starting up (environment=%s)", settings.environment)
+    storage.ensure_bucket_exists()
     yield
     logger.info("CollabAI API shutting down")
 
@@ -60,8 +63,9 @@ async def health() -> dict:
     return {"status": "ok", "service": "collabai-api", "version": "0.1.0"}
 
 
-from app.routers import auth, workspaces, projects
+from app.routers import auth, workspaces, projects ,documents
 
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(workspaces.router, prefix="/workspaces", tags=["workspaces"])
 app.include_router(projects.router, tags=["projects"])
+app.include_router(documents.router, prefix="/documents", tags=["documents"])

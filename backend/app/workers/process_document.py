@@ -1,0 +1,110 @@
+"""
+The document processing job: extract text -> chunk -> embed -> store.
+
+Runs in the RQ worker process (see worker_main.py), not in the API
+process. Implements idempotency per docs/04-technical-architecture.md §8:
+if this job is retried (e.g. the worker crashed mid-run), it deletes any
+partial chunks from the previous attempt before re-inserting, so retries
+never produce duplicates.
+"""
+
+import io
+
+import fitz  # PyMuPDF
+import pytesseract
+from PIL import Image
+from pypdf import PdfReader
+import docx as docx_lib
+
+from app.core.db import SessionLocal
+from app.core.embeddings import embed_text
+from app.core import storage
+from app.models.document import Document
+from app.models.document_version import DocumentVersion
+from app.models.document_chunk import DocumentChunk
+from app.models.processing_job import ProcessingJob
+
+CHUNK_SIZE = 800
+CHUNK_OVERLAP = 100
+
+
+def ocr_pdf(file_bytes: bytes) -> str:
+    """Rasterizes each page and runs OCR — for scanned/image-only PDFs with no text layer."""
+    pdf = fitz.open(stream=file_bytes, filetype="pdf")
+    pages_text = []
+    for page in pdf:
+        pixmap = page.get_pixmap(dpi=300)
+        image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
+        pages_text.append(pytesseract.image_to_string(image))
+    return "\n".join(pages_text)
+
+
+def extract_text(file_bytes: bytes, filename: str) -> str:
+    lower = filename.lower()
+    if lower.endswith(".pdf"):
+        reader = PdfReader(io.BytesIO(file_bytes))
+        text = "\n".join(page.extract_text() or "" for page in reader.pages)
+        if not text.strip():
+            text = ocr_pdf(file_bytes)
+        return text
+    elif lower.endswith(".docx"):
+        doc = docx_lib.Document(io.BytesIO(file_bytes))
+        return "\n".join(p.text for p in doc.paragraphs)
+    else:
+        return file_bytes.decode("utf-8", errors="ignore")
+
+
+def chunk_text(text: str) -> list[str]:
+    chunks = []
+    start = 0
+    while start < len(text):
+        end = start + CHUNK_SIZE
+        chunks.append(text[start:end])
+        start = end - CHUNK_OVERLAP
+    return [c.strip() for c in chunks if c.strip()]
+
+
+def run(document_id: str, version_id: str, job_id: str) -> None:
+    db = SessionLocal()
+    try:
+        job = db.query(ProcessingJob).filter(ProcessingJob.id == job_id).first()
+        job.status = "processing"
+        job.attempts += 1
+        db.commit()
+
+        document = db.query(Document).filter(Document.id == document_id).first()
+        version = db.query(DocumentVersion).filter(DocumentVersion.id == version_id).first()
+
+        try:
+            file_bytes = storage.download_file(version.object_storage_key)
+            text = extract_text(file_bytes, version.filename)
+            if not text.strip():
+                raise ValueError("No extractable text found in file")
+
+            # Idempotency: wipe any chunks from a previous (failed/retried)
+            # attempt on this version before inserting fresh ones.
+            db.query(DocumentChunk).filter(DocumentChunk.document_version_id == version_id).delete()
+            db.commit()
+
+            for chunk in chunk_text(text):
+                embedding = embed_text(chunk)
+                db.add(DocumentChunk(
+                    document_version_id=version_id,
+                    project_id=document.project_id,
+                    chunk_text=chunk,
+                    embedding=embedding,
+                ))
+            db.commit()
+
+            version.status = "ready"
+            job.status = "completed"
+            db.commit()
+        except Exception as e:
+            db.rollback()
+            version.status = "processing_failed"
+            version.failure_reason = str(e)
+            job.status = "failed"
+            db.commit()
+
+    finally:
+        db.close()

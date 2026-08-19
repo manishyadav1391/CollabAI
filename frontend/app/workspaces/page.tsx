@@ -52,12 +52,13 @@ export default function WorkspaceSwitcherPage() {
       ) : (
         <div className="flex flex-col gap-3">
           {workspaces.map((ws) => (
-            <div
-              key={ws.id}
-              className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
-            >
-              <p className="font-medium text-zinc-900 dark:text-zinc-50">{ws.name}</p>
-            </div>
+           
+       <a  key={ws.id}
+            href={`/w/${ws.id}/projects`}
+            className="block rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+       >
+             <p className="font-medium text-zinc-900 dark:text-zinc-50">{ws.name}</p>
+        </a>
           ))}
           
            <a  href="/workspaces/create"
