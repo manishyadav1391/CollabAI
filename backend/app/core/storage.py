@@ -39,7 +39,8 @@ def ensure_bucket_exists() -> None:
             CORSConfiguration={
                 "CORSRules": [
                     {
-                        "AllowedOrigins": ["*"],
+                        # "AllowedOrigins": ["*"],
+                        "AllowedOrigins": [settings.frontend_base_url],
                         "AllowedMethods": ["GET", "PUT", "POST"],
                         "AllowedHeaders": ["*"],
                     }

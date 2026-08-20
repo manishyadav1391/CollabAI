@@ -18,6 +18,13 @@ from app.models.document import Document
 from app.models.document_version import DocumentVersion
 from app.models.processing_job import ProcessingJob
 from app.models.document_chunk import DocumentChunk
+from app.models.ai_conversation import AIConversation
+from app.models.ai_message import AIMessage
+from app.models.conversation import Conversation
+from app.models.message import Message
+from app.models.notification import Notification
+from app.models.comment import Comment
+from app.models.audit_log import AuditLog
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

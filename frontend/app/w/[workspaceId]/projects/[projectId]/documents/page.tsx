@@ -6,18 +6,22 @@ import axios from "axios";
 import { apiClient } from "@/lib/api-client";
 import { StatusBadge } from "@/components/StatusBadge";
 
+
 type DocumentItem = {
   id: string;
   current_version: { filename: string; status: string } | null;
 };
 
 export default function DocumentsPage() {
-  const { projectId } = useParams<{ projectId: string }>();
+  // const { projectId } = useParams<{ projectId: string }>();
   const [documents, setDocuments] = useState<DocumentItem[]>([]);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const documentsRef = useRef<DocumentItem[]>([]);
+  const [query, setQuery] = useState("");
+  const [searchResults, setSearchResults] = useState<any[]>([]);    
+  const { workspaceId, projectId } = useParams<{ workspaceId: string; projectId: string }>();
 
   function load() {
     apiClient
@@ -73,11 +77,46 @@ export default function DocumentsPage() {
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
   }
+  async function handleSearch(e: React.FormEvent) {
+  e.preventDefault();
+  const { data } = await apiClient.get("/search", { params: { q: query, project_id: projectId } });
+  setSearchResults(data.results);
+}
 
   return (
+
+    
     <div className="mx-auto max-w-2xl px-6 py-10">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">Documents</h1>
+        <a href={`/w/${useParams().workspaceId}/projects/${projectId}/ai`} className="text-sm text-zinc-500 underline">
+  Go to AI Copilot →
+</a>
+        <form onSubmit={handleSearch} className="mb-4 flex gap-2">
+  <input
+    value={query}
+    onChange={(e) => setQuery(e.target.value)}
+    placeholder="Search documents…"
+    className="flex-1 rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800"
+  />
+  <button className="rounded-lg border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-700">
+    Search
+  </button>
+</form>
+
+{searchResults.length > 0 && (
+  <div className="mb-6 flex flex-col gap-2 rounded-lg border border-zinc-200 p-3 dark:border-zinc-800">
+    {searchResults.map((r, i) => (
+      <div key={i} className="text-sm">
+        <span className="font-medium">{r.filename}</span>
+        <span
+          className="ml-2 text-zinc-500"
+          dangerouslySetInnerHTML={{ __html: r.snippet }}
+        />
+      </div>
+    ))}
+  </div>
+)}
         <label className="cursor-pointer rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white dark:bg-zinc-50 dark:text-zinc-900">
           {uploading ? "Uploading…" : "+ Upload"}
           <input
@@ -95,17 +134,18 @@ export default function DocumentsPage() {
           <p className="text-sm text-zinc-500">No documents yet — upload your first file.</p>
         )}
         {documents.map((doc) => (
-          <div
-            key={doc.id}
-            className="flex items-center justify-between rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
-          >
+         
+ < a key={doc.id}
+  href={`/w/${workspaceId}/projects/${projectId}/documents/${doc.id}`}
+  className="flex items-center justify-between rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
+>
             <span className="text-zinc-900 dark:text-zinc-50">
               {doc.current_version?.filename ?? "(processing…)"}
             </span>
             {doc.current_version && (
               <StatusBadge status={doc.current_version.status as any} />
             )}
-          </div>
+          </a>
         ))}
       </div>
     </div>

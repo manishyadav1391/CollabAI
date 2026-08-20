@@ -51,5 +51,5 @@ def set_permissions(
     if not membership or membership.role not in ("owner", "admin"):
         raise HTTPException(status_code=403, detail="Insufficient role")
 
-    project_service.set_project_permissions(db, project_id, payload.user_ids)
+    project_service.set_project_permissions(db, project_id, payload.user_ids, current_user.id)
     return {"status": "permissions updated"}

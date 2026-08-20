@@ -11,13 +11,19 @@ required environment variables.
 """
 
 from functools import lru_cache
+from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# Repo root .env, resolved from this file's location so settings load
+# correctly regardless of the process's current working directory
+# (e.g. `uvicorn app.main:app` run from backend/ vs. the repo root).
+_ENV_FILE = Path(__file__).resolve().parent.parent.parent / ".env"
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file=".env",
+        env_file=_ENV_FILE,
         env_file_encoding="utf-8",
         extra="ignore",
     )
@@ -44,7 +50,9 @@ class Settings(BaseSettings):
     minio_bucket: str = "collabai-documents"
 
     # --- AI / LLM (required from Phase 5) ---
-    anthropic_api_key: str = ""
+    ollama_api_key: str = ""
+    ollama_host: str = "https://ollama.com"
+    ollama_model: str = "gpt-oss:120b"
     embedding_model_name: str = "all-MiniLM-L6-v2"
 
     # --- Email (required from Phase 6) ---

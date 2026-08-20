@@ -23,6 +23,7 @@ from app.models.document import Document
 from app.models.document_version import DocumentVersion
 from app.models.document_chunk import DocumentChunk
 from app.models.processing_job import ProcessingJob
+from app.services.notification_service import create_notification
 
 CHUNK_SIZE = 800
 CHUNK_OVERLAP = 100
@@ -99,11 +100,17 @@ def run(document_id: str, version_id: str, job_id: str) -> None:
             version.status = "ready"
             job.status = "completed"
             db.commit()
+            create_notification(db, document.created_by, "processing_done", {
+                "document_id": str(document.id), "filename": version.filename,
+            })
         except Exception as e:
             db.rollback()
             version.status = "processing_failed"
             version.failure_reason = str(e)
             job.status = "failed"
+            create_notification(db, document.created_by, "processing_failed", {
+                "document_id": str(document.id), "filename": version.filename,
+            })
             db.commit()
 
     finally:

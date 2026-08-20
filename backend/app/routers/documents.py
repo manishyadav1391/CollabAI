@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
@@ -8,6 +8,7 @@ from app.schemas.document import (
     UploadUrlRequest, UploadUrlResponse, UploadCompleteRequest, DocumentResponse,
 )
 from app.services import document_service
+from app.core.exceptions import PermissionDeniedError
 
 router = APIRouter()
 
@@ -34,13 +35,17 @@ def confirm_upload(
     return {"status": "confirmed"}
 
 
+
 @router.get("", response_model=list[DocumentResponse])
 def list_documents(
     project_id: str,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    return document_service.list_documents(db, project_id)
+    try:
+        return document_service.list_documents(db, project_id, current_user.id)
+    except PermissionDeniedError as e:
+        raise HTTPException(status_code=403, detail=str(e))
 
 
 @router.get("/{document_id}/download-url")
@@ -49,7 +54,10 @@ def get_download_url(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    return {"download_url": document_service.get_download_url(db, document_id)}
+    try:
+        return {"download_url": document_service.get_download_url(db, document_id, current_user.id)}
+    except PermissionDeniedError as e:
+        raise HTTPException(status_code=403, detail=str(e))
 
 
 @router.delete("/{document_id}")

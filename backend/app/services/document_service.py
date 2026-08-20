@@ -4,6 +4,8 @@ from sqlalchemy.orm import Session
 from app.core import storage
 from app.repositories import document_repo
 from app.services import processing_service
+from app.core.permission_filter import can_access_project
+from app.core.exceptions import PermissionDeniedError
 
 
 def create_upload_session(db: Session, project_id: str, folder_id: str | None,
@@ -27,13 +29,19 @@ def confirm_upload(db: Session, document_id: str, version_id: str):
     return document_repo.get_by_id(db, document_id)
 
 
-def get_download_url(db: Session, document_id: str) -> str:
+def get_download_url(db: Session, document_id: str, user_id) -> str:
     document = document_repo.get_by_id(db, document_id)
+    if not document or not can_access_project(db, user_id, str(document.project_id)):
+        raise PermissionDeniedError("No access to this document")
+
     version = document_repo.get_version(db, document.current_version_id)
     return storage.generate_download_url(version.object_storage_key)
 
 
-def list_documents(db: Session, project_id: str) -> list[dict]:
+def list_documents(db: Session, project_id: str, user_id) -> list[dict]:
+    if not can_access_project(db, user_id, project_id):
+        raise PermissionDeniedError("No access to this project")
+
     docs = document_repo.list_by_project(db, project_id)
     result = []
     for d in docs:

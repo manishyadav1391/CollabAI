@@ -1,3 +1,4 @@
 docker compose up -d postgres
 docker compose up -d minio
 docker compose up -d redis
+docker compose exec postgres psql -U collabai -d collabai -c "SELECT id, email FROM users;"

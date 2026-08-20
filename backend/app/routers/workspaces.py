@@ -53,15 +53,13 @@ def list_members(
 
 @router.post("/{workspace_id}/members/{user_id}/role")
 def change_role(
-    workspace_id: str,
-    user_id: str,
-    payload: RoleChangeRequest,
+    workspace_id: str, user_id: str, payload: RoleChangeRequest,
     current_user: User = Depends(get_current_user),
     _: None = Depends(require_role("admin")),
     db: Session = Depends(get_db),
 ):
     try:
-        workspace_service.change_role(db, workspace_id, user_id, payload.role)
+        workspace_service.change_role(db, workspace_id, user_id, payload.role, current_user.id)
     except PermissionDeniedError as e:
         raise HTTPException(status_code=403, detail=str(e))
     except NotFoundError as e:
@@ -69,16 +67,32 @@ def change_role(
     return {"status": "role updated"}
 
 
+
 @router.delete("/{workspace_id}/members/{user_id}")
 def remove_member(
-    workspace_id: str,
-    user_id: str,
+    workspace_id: str, user_id: str,
     current_user: User = Depends(get_current_user),
     _: None = Depends(require_role("admin")),
     db: Session = Depends(get_db),
 ):
     try:
-        workspace_service.remove_member(db, workspace_id, user_id)
+        workspace_service.remove_member(db, workspace_id, user_id, current_user.id)
     except PermissionDeniedError as e:
         raise HTTPException(status_code=403, detail=str(e))
     return {"status": "member removed"}
+
+
+
+@router.delete("/{workspace_id}")
+def delete_workspace(
+    workspace_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        workspace_service.delete_workspace(db, workspace_id, current_user.id)
+    except PermissionDeniedError as e:
+        raise HTTPException(status_code=403, detail=str(e))
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    return {"status": "workspace deleted"}    

@@ -62,3 +62,6 @@ def remove_member(db: Session, workspace_id: str, user_id: str) -> None:
         WorkspaceMember.user_id == user_id,
     ).delete()
     db.commit()
+
+def get_by_id(db: Session, workspace_id: str):
+    return db.query(Workspace).filter(Workspace.id == workspace_id).first()    
