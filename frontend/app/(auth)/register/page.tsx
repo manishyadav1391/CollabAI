@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import { apiClient } from "@/lib/api-client";
+import { setTokens } from "@/lib/auth";
 import { AuthShell } from "@/components/auth/AuthShell";
 import { Field } from "@/components/ui/Field";
 import { Input } from "@/components/ui/Input";
@@ -12,8 +13,18 @@ import { Banner } from "@/components/ui/Banner";
 import { Button } from "@/components/ui/Button";
 
 export default function RegisterPage() {
+  return (
+    <Suspense>
+      <RegisterForm />
+    </Suspense>
+  );
+}
+
+function RegisterForm() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
+  const [email, setEmail] = useState(searchParams.get("email") ?? "");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -26,7 +37,16 @@ export default function RegisterPage() {
 
     try {
       await apiClient.post("/auth/register", { email, password, name });
-      router.push("/login");
+
+      if (next) {
+        // Coming from an invite link — log straight in so the destination
+        // page (accept-invite) has a session to complete the join with.
+        const { data } = await apiClient.post("/auth/login", { email, password });
+        setTokens(data.access_token, data.refresh_token);
+        router.push(next);
+      } else {
+        router.push("/login");
+      }
     } catch (err) {
       const detail = axios.isAxiosError(err) ? err.response?.data?.detail : undefined;
       setError(detail ?? "Registration failed");
@@ -87,7 +107,10 @@ export default function RegisterPage() {
 
         <p className="mt-6 text-center text-[13.5px] text-[var(--muted)]">
           Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-[var(--accent-soft)]">
+          <Link
+            href={next ? `/login?next=${encodeURIComponent(next)}` : "/login"}
+            className="font-semibold text-[var(--accent-soft)]"
+          >
             Log in
           </Link>
         </p>

@@ -56,9 +56,11 @@ class Settings(BaseSettings):
     embedding_model_name: str = "all-MiniLM-L6-v2"
 
     # --- Email (required from Phase 6) ---
-    email_provider: str = ""  # resend | sendgrid | ses
-    email_api_key: str = ""
-    email_from_address: str = ""
+    smtp_host: str = ""
+    smtp_port: int = 587
+    smtp_username: str = ""
+    smtp_password: str = ""
+    smtp_from: str = ""
 
     # --- Frontend ---
     frontend_base_url: str = "http://localhost:3000"

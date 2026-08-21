@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import axios from "axios";
 import { apiClient } from "@/lib/api-client";
@@ -13,7 +13,17 @@ import { Banner } from "@/components/ui/Banner";
 import { Button } from "@/components/ui/Button";
 
 export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -27,7 +37,7 @@ export default function LoginPage() {
     try {
       const { data } = await apiClient.post("/auth/login", { email, password });
       setTokens(data.access_token, data.refresh_token);
-      router.push("/workspaces");
+      router.push(next || "/workspaces");
     } catch (err) {
       const detail = axios.isAxiosError(err) ? err.response?.data?.detail : undefined;
       setError(detail ?? "Login failed");
@@ -83,7 +93,10 @@ export default function LoginPage() {
 
         <p className="mt-6 text-center text-[13.5px] text-[var(--muted)]">
           No account?{" "}
-          <Link href="/register" className="font-semibold text-[var(--accent-soft)]">
+          <Link
+            href={next ? `/register?next=${encodeURIComponent(next)}` : "/register"}
+            className="font-semibold text-[var(--accent-soft)]"
+          >
             Register
           </Link>
         </p>

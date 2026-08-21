@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
+import { apiClient } from "@/lib/api-client";
 import { getAccessToken } from "@/lib/auth";
 import { useProjectContext } from "@/lib/hooks/useProjectContext";
 import { TOPBAR_HEIGHT } from "@/components/dashboard/Topbar";
@@ -19,12 +20,44 @@ type Exchange = {
   streaming: boolean;
 };
 
+type AIMessageHistoryItem = {
+  role: "user" | "assistant";
+  content: string;
+  citations: Citation[] | null;
+  created_at: string;
+};
+
+function exchangesFromHistory(history: AIMessageHistoryItem[]): Exchange[] {
+  const exchanges: Exchange[] = [];
+  for (let i = 0; i < history.length; i++) {
+    const item = history[i];
+    if (item.role !== "user") continue;
+    const answer = history[i + 1]?.role === "assistant" ? history[i + 1] : null;
+    exchanges.push({
+      id: `history-${item.created_at}-${i}`,
+      question: item.content,
+      answer: answer?.content ?? "",
+      citations: answer?.citations ?? [],
+      streaming: false,
+    });
+    if (answer) i++;
+  }
+  return exchanges;
+}
+
 export default function AICopilotPage() {
   const { workspaceId, projectId } = useParams<{ workspaceId: string; projectId: string }>();
   const { workspaceName, project } = useProjectContext(workspaceId, projectId);
   const [exchanges, setExchanges] = useState<Exchange[]>([]);
   const [asking, setAsking] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    apiClient
+      .get<AIMessageHistoryItem[]>(`/ai/history/${projectId}`)
+      .then(({ data }) => setExchanges(exchangesFromHistory(data)))
+      .catch(() => {});
+  }, [projectId]);
 
   useEffect(() => {
     const el = scrollRef.current;

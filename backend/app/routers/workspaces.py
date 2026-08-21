@@ -3,10 +3,11 @@ from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.core.deps import get_current_user, require_role
-from app.core.exceptions import NotFoundError, PermissionDeniedError
+from app.core.exceptions import NotFoundError, PermissionDeniedError, ValidationError
 from app.models.user import User
 from app.schemas.workspace import (
     WorkspaceCreateRequest, WorkspaceResponse, InviteRequest, RoleChangeRequest, MemberResponse,
+    InvitePreviewResponse, AcceptInviteResponse,
 )
 from app.services import workspace_service
 
@@ -40,6 +41,32 @@ def invite_member(
 ):
     invite = workspace_service.invite_member(db, workspace_id, payload.email, payload.role)
     return {"invite_id": str(invite.id), "token": invite.token}
+
+
+@router.get("/invites/{token}", response_model=InvitePreviewResponse)
+def preview_invite(token: str, db: Session = Depends(get_db)):
+    try:
+        return workspace_service.get_invite_preview(db, token)
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except ValidationError as e:
+        raise HTTPException(status_code=410, detail=str(e))
+
+
+@router.post("/invites/{token}/accept", response_model=AcceptInviteResponse)
+def accept_invite(
+    token: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    try:
+        return workspace_service.accept_invite(db, token, current_user)
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except ValidationError as e:
+        raise HTTPException(status_code=410, detail=str(e))
+    except PermissionDeniedError as e:
+        raise HTTPException(status_code=403, detail=str(e))
 
 
 @router.get("/{workspace_id}/members", response_model=list[MemberResponse])

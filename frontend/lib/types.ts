@@ -14,6 +14,28 @@ export type Member = {
   role: string;
 };
 
+export type InvitePreview = {
+  workspace_id: string;
+  workspace_name: string;
+  email: string;
+  role: string;
+};
+
+export type ChatMessage = {
+  id: string;
+  sender_id: string;
+  content: string;
+  sequence_number: number;
+  created_at: string;
+};
+
+export type DMThread = {
+  conversation_id: string;
+  other_user_id: string;
+  last_message: string | null;
+  last_message_at: string | null;
+};
+
 export type Project = {
   id: string;
   workspace_id: string;

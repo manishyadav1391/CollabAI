@@ -3,7 +3,7 @@ from datetime import datetime, timedelta, timezone
 
 from sqlalchemy.orm import Session
 
-from app.core.exceptions import NotFoundError, PermissionDeniedError
+from app.core.exceptions import NotFoundError, PermissionDeniedError, ValidationError
 from app.repositories import workspace_repo, user_repo
 from app.core.audit import log_action
 
@@ -33,6 +33,42 @@ def invite_member(db: Session, workspace_id: str, email: str, role: str):
         body=f"Click the link to join: {settings.frontend_base_url}/accept-invite?token={invite.token}",
     )
     return invite
+
+
+def _check_invite_usable(invite):
+    if invite is None:
+        raise NotFoundError("Invite not found")
+    if invite.accepted_at is not None:
+        raise ValidationError("This invite has already been used")
+    if invite.expires_at < datetime.now(timezone.utc):
+        raise ValidationError("This invite has expired")
+
+
+def get_invite_preview(db: Session, token: str) -> dict:
+    invite = workspace_repo.get_invite_by_token(db, token)
+    _check_invite_usable(invite)
+    workspace = workspace_repo.get_by_id(db, invite.workspace_id)
+    return {
+        "workspace_id": invite.workspace_id,
+        "workspace_name": workspace.name if workspace else "",
+        "email": invite.email,
+        "role": invite.invited_role,
+    }
+
+
+def accept_invite(db: Session, token: str, current_user) -> dict:
+    invite = workspace_repo.get_invite_by_token(db, token)
+    _check_invite_usable(invite)
+    if invite.email.lower() != current_user.email.lower():
+        raise PermissionDeniedError("This invite was sent to a different email address")
+
+    if not workspace_repo.get_membership(db, invite.workspace_id, current_user.id):
+        workspace_repo.add_member(db, invite.workspace_id, current_user.id, invite.invited_role)
+    invite.accepted_at = datetime.now(timezone.utc)
+    db.commit()
+
+    workspace = workspace_repo.get_by_id(db, invite.workspace_id)
+    return {"workspace_id": invite.workspace_id, "workspace_name": workspace.name if workspace else ""}
 
 
 def list_members(db: Session, workspace_id: str):

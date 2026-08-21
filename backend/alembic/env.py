@@ -21,6 +21,7 @@ from app.models.document_chunk import DocumentChunk
 from app.models.ai_conversation import AIConversation
 from app.models.ai_message import AIMessage
 from app.models.conversation import Conversation
+from app.models.conversation_participant import ConversationParticipant
 from app.models.message import Message
 from app.models.notification import Notification
 from app.models.comment import Comment

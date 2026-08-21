@@ -22,8 +22,8 @@ from app.core.permission_filter import permission_filtered_project_ids
 from app.models.document_chunk import DocumentChunk
 from app.models.document_version import DocumentVersion
 from app.models.document import Document
-from app.models.ai_conversation import AIConversation
 from app.models.ai_message import AIMessage
+from app.repositories import ai_message_repo
 
 settings = get_settings()
 _client = Client(
@@ -126,10 +126,12 @@ def ask_stream(db: Session, user_id, project_id: str, question: str):
         full_answer += text_delta
         yield f"data: {json.dumps({'type': 'token', 'text': text_delta})}\n\n"
 
+    # Every retrieved chunk was fed to the model as context, so every one of
+    # them is a legitimate citation — trusting the model to echo [n] markers
+    # inline is fragile and drops sources whenever it doesn't comply.
     citations = [
         {"document_id": c["document_id"], "filename": c["filename"], "page_or_section": c["page_or_section"]}
         for c in chunks
-        if f"[{chunks.index(c) + 1}]" in full_answer
     ]
 
     yield f"data: {json.dumps({'type': 'citations', 'citations': citations})}\n\n"
@@ -137,10 +139,12 @@ def ask_stream(db: Session, user_id, project_id: str, question: str):
 
 
 def _persist(db: Session, user_id, project_id: str, question: str, answer: str, citations: list[dict]):
-    conversation = AIConversation(user_id=user_id, project_id=project_id)
-    db.add(conversation)
-    db.commit()
+    conversation = ai_message_repo.get_or_create_ai_conversation(db, user_id, project_id)
 
     db.add(AIMessage(conversation_id=conversation.id, role="user", content=question))
     db.add(AIMessage(conversation_id=conversation.id, role="assistant", content=answer, citations=citations))
     db.commit()
+
+
+def get_history(db: Session, user_id, project_id: str, limit: int = 50) -> list[AIMessage]:
+    return ai_message_repo.list_history(db, user_id, project_id, limit)

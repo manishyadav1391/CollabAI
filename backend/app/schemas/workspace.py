@@ -31,3 +31,15 @@ class MemberResponse(BaseModel):
 
 class RoleChangeRequest(BaseModel):
     role: str
+
+
+class InvitePreviewResponse(BaseModel):
+    workspace_id: uuid.UUID
+    workspace_name: str
+    email: str
+    role: str
+
+
+class AcceptInviteResponse(BaseModel):
+    workspace_id: uuid.UUID
+    workspace_name: str

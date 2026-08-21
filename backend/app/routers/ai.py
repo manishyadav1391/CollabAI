@@ -1,11 +1,12 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
 from app.core.deps import get_current_user
+from app.core.permission_filter import can_access_project
 from app.models.user import User
-from app.schemas.ai import AskRequest
+from app.schemas.ai import AskRequest, AIMessageResponse
 from app.services import ai_service
 from app.core.rate_limit import check_rate_limit
 
@@ -23,3 +24,14 @@ def ask(
         ai_service.ask_stream(db, current_user.id, payload.project_id, payload.question),
         media_type="text/event-stream",
     )
+
+
+@router.get("/history/{project_id}", response_model=list[AIMessageResponse])
+def history(
+    project_id: str,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if not can_access_project(db, current_user.id, project_id):
+        raise HTTPException(status_code=403, detail="Not permitted to view this project")
+    return ai_service.get_history(db, current_user.id, project_id)
