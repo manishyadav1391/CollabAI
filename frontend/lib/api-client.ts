@@ -25,8 +25,9 @@ apiClient.interceptors.request.use((config) => {
 });
 
 // On a 401, try refreshing the access token once, then retry the original
-// request. If refresh also fails, clear tokens (the app should then
-// redirect to /login — handled by the pages themselves).
+// request. If refresh also fails, the session is unrecoverable — clear
+// tokens and send the user back to login rather than leaving pages stuck
+// on a permanent loading state.
 let isRefreshing = false;
 
 apiClient.interceptors.response.use(
@@ -51,6 +52,13 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (refreshError) {
         clearTokens();
+        // A plain module outside React's tree has no router to push() with,
+        // and a full reload is exactly what we want here anyway — it drops
+        // every component's in-memory state along with the dead session.
+        if (typeof window !== "undefined" && window.location.pathname !== "/login") {
+          // eslint-disable-next-line @next/next/no-location-assign-relative-destination
+          window.location.href = "/login";
+        }
         return Promise.reject(refreshError);
       } finally {
         isRefreshing = false;

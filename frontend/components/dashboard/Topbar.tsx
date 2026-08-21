@@ -10,13 +10,17 @@ const SECTION_LABELS: Record<string, string> = {
   settings: "Settings",
 };
 
+export const TOPBAR_HEIGHT = 64;
+
 export function Topbar({ workspaceId, workspaceName }: { workspaceId: string; workspaceName: string }) {
   const pathname = usePathname();
   const segment = pathname.split("/").filter(Boolean)[2];
   const section = SECTION_LABELS[segment] ?? "Home";
 
   return (
-    <header className="sticky top-0 z-10 flex items-center gap-4 border-b border-[var(--border)] bg-[rgba(250,250,251,.85)] px-6 py-[14px] backdrop-blur-[10px]">
+    <header
+      className="sticky top-0 z-10 flex h-[64px] shrink-0 items-center gap-4 border-b border-[var(--border)] bg-[rgba(250,250,251,.85)] px-6 backdrop-blur-[10px]"
+    >
       <div className="min-w-0 shrink-0 text-[13.5px] text-[var(--muted)]">
         <span className="font-semibold text-[var(--text)]">{workspaceName || "Workspace"}</span>
         <span className="mx-[6px] text-[var(--faint)]">/</span>

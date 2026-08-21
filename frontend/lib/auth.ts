@@ -34,3 +34,22 @@ export function clearTokens() {
 export function isLoggedIn(): boolean {
   return !!getAccessToken();
 }
+
+/**
+ * Reads the `sub` claim out of the access token for client-side UI gating
+ * (e.g. hiding an admin-only button). Not a trust boundary — the server
+ * re-checks every role-gated route independently; this only decides what
+ * the UI shows before that.
+ */
+export function getCurrentUserId(): string | null {
+  const token = getAccessToken();
+  if (!token) return null;
+
+  try {
+    const payload = token.split(".")[1];
+    const decoded = JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
+    return decoded.sub ?? null;
+  } catch {
+    return null;
+  }
+}

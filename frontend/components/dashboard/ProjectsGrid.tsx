@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Member, Project } from "@/lib/types";
-import { avatarGradient, formatRelativeTime, initials } from "@/lib/format";
+import { formatRelativeTime } from "@/lib/format";
+import { AvatarStack } from "@/components/ui/AvatarStack";
 import { FolderPlusIcon, MoreHorizontalIcon } from "@/components/dashboard/icons";
 
 export type ProjectSummary = Project & { docCount: number; lastActive: string | null };
@@ -17,32 +18,6 @@ function VisibilityChip({ visibility }: { visibility: string }) {
     >
       {restricted ? "RESTRICTED" : "WORKSPACE-WIDE"}
     </span>
-  );
-}
-
-function AvatarStack({ members }: { members: Member[] }) {
-  if (members.length === 0) return null;
-  return (
-    <div className="flex">
-      {members.slice(0, 3).map((m, i) => (
-        <span
-          key={m.user_id}
-          className="flex h-[26px] w-[26px] items-center justify-center rounded-full border-2 border-white text-[10px] font-bold text-white"
-          style={{ background: avatarGradient(m.user_id), marginLeft: i === 0 ? 0 : -8 }}
-          title={m.name}
-        >
-          {initials(m.name)}
-        </span>
-      ))}
-      {members.length > 3 && (
-        <span
-          className="flex h-[26px] w-[26px] items-center justify-center rounded-full border-2 border-white bg-[var(--panel-3)] text-[9.5px] font-bold text-[var(--muted)]"
-          style={{ marginLeft: -8 }}
-        >
-          +{members.length - 3}
-        </span>
-      )}
-    </div>
   );
 }
 
@@ -76,7 +51,7 @@ function ProjectCard({
       </div>
 
       <div className="mt-auto flex items-center justify-between gap-3 pt-1">
-        <AvatarStack members={members} />
+        <AvatarStack members={members} max={3} />
         <span className="text-[12px] text-[var(--faint)]">
           {project.lastActive ? `Active ${formatRelativeTime(project.lastActive)}` : "No activity yet"}
         </span>

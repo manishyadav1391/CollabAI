@@ -38,5 +38,17 @@ export type Document = {
   project_id: string;
   folder_id: string | null;
   restricted: boolean;
+  created_by: string;
   current_version: DocumentVersion | null;
+};
+
+export type CommentStatus = "open" | "resolved";
+
+export type Comment = {
+  id: string;
+  parent_comment_id: string | null;
+  author_id: string;
+  content: string;
+  status: CommentStatus;
+  created_at: string;
 };

@@ -206,13 +206,19 @@ export default function SettingsPage() {
   const [members, setMembers] = useState<Member[]>([]);
 
   function loadMembers() {
-    apiClient.get<Member[]>(`/workspaces/${workspaceId}/members`).then(({ data }) => setMembers(data));
+    apiClient
+      .get<Member[]>(`/workspaces/${workspaceId}/members`)
+      .then(({ data }) => setMembers(data))
+      .catch(() => {});
   }
 
   useEffect(() => {
-    apiClient.get<Workspace[]>("/workspaces").then(({ data }) => {
-      setWorkspace(data.find((w) => w.id === workspaceId) ?? null);
-    });
+    apiClient
+      .get<Workspace[]>("/workspaces")
+      .then(({ data }) => {
+        setWorkspace(data.find((w) => w.id === workspaceId) ?? null);
+      })
+      .catch(() => {});
     loadMembers();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [workspaceId]);

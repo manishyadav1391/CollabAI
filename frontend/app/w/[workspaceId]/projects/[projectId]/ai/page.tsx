@@ -1,101 +1,141 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import { getAccessToken } from "@/lib/auth";
+import { useProjectContext } from "@/lib/hooks/useProjectContext";
+import { TOPBAR_HEIGHT } from "@/components/dashboard/Topbar";
+import { ProjectPageHeader } from "@/components/projects/ProjectPageHeader";
+import { SparkleIcon } from "@/components/ui/icons";
+import { QuestionBubble } from "@/components/ai/QuestionBubble";
+import { AnswerBubble, type Citation } from "@/components/ai/AnswerBubble";
+import { AskComposer } from "@/components/ai/AskComposer";
 
-type Citation = { document_id: string; filename: string; page_or_section: string | null };
+type Exchange = {
+  id: string;
+  question: string;
+  answer: string;
+  citations: Citation[];
+  streaming: boolean;
+};
 
 export default function AICopilotPage() {
-  const { projectId } = useParams<{ projectId: string }>();
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
-  const [citations, setCitations] = useState<Citation[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { workspaceId, projectId } = useParams<{ workspaceId: string; projectId: string }>();
+  const { workspaceName, project } = useProjectContext(workspaceId, projectId);
+  const [exchanges, setExchanges] = useState<Exchange[]>([]);
+  const [asking, setAsking] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  async function handleAsk(e: React.FormEvent) {
-    e.preventDefault();
-    setAnswer("");
-    setCitations([]);
-    setLoading(true);
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [exchanges]);
 
-    const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
-    const response = await fetch(`${apiBase}/ai/ask`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getAccessToken()}`,
-      },
-      body: JSON.stringify({ project_id: projectId, question }),
-    });
+  function patchLast(id: string, patch: Partial<Exchange>) {
+    setExchanges((prev) => prev.map((ex) => (ex.id === id ? { ...ex, ...patch } : ex)));
+  }
 
-    const reader = response.body?.getReader();
-    const decoder = new TextDecoder();
-    if (!reader) return;
+  async function handleAsk(question: string) {
+    const id = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    setExchanges((prev) => [...prev, { id, question, answer: "", citations: [], streaming: true }]);
+    setAsking(true);
 
-    let buffer = "";
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+    try {
+      const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+      const response = await fetch(`${apiBase}/ai/ask`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getAccessToken()}`,
+        },
+        body: JSON.stringify({ project_id: projectId, question }),
+      });
 
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split("\n\n");
-      buffer = lines.pop() ?? "";
+      const reader = response.body?.getReader();
+      const decoder = new TextDecoder();
+      if (!reader) return;
 
-      for (const line of lines) {
-        if (!line.startsWith("data: ")) continue;
-        const event = JSON.parse(line.slice(6));
-        if (event.type === "token") {
-          setAnswer((prev) => prev + event.text);
-        } else if (event.type === "citations") {
-          setCitations(event.citations);
+      let buffer = "";
+      let answer = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n\n");
+        buffer = lines.pop() ?? "";
+
+        for (const line of lines) {
+          if (!line.startsWith("data: ")) continue;
+          const event = JSON.parse(line.slice(6));
+          if (event.type === "token") {
+            answer += event.text;
+            patchLast(id, { answer });
+          } else if (event.type === "citations") {
+            patchLast(id, { citations: event.citations, streaming: false });
+          }
         }
       }
+    } finally {
+      patchLast(id, { streaming: false });
+      setAsking(false);
     }
-
-    setLoading(false);
   }
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-10">
-      <h1 className="mb-6 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-        AI Copilot
-      </h1>
+    <div className="flex flex-col" style={{ height: `calc(100vh - ${TOPBAR_HEIGHT}px)` }}>
+      <ProjectPageHeader
+        workspaceId={workspaceId}
+        projectId={projectId}
+        workspaceName={workspaceName}
+        projectName={project?.name ?? ""}
+      />
 
-      <form onSubmit={handleAsk} className="mb-6 flex gap-2">
-        <input
-          required
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          placeholder="Ask a question about this project's documents…"
-          className="flex-1 rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800"
-        />
-        <button
-          disabled={loading}
-          className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900"
-        >
-          {loading ? "Thinking…" : "Ask"}
-        </button>
-      </form>
+      <div className="mx-auto flex min-h-0 w-full max-w-[880px] flex-1 flex-col px-6 py-6">
+        <div className="mb-4 flex shrink-0 items-center gap-[10px]">
+          <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-[image:var(--grad)] shadow-[var(--sh-accent)]">
+            <SparkleIcon size={16} stroke="#fff" strokeWidth={2.2} />
+          </span>
+          <div>
+            <h1 className="text-[16px] font-extrabold tracking-[-.01em] text-[var(--text)]">Ask CollabAI</h1>
+            <p className="text-[12.5px] text-[var(--muted)]">
+              Grounded in this project&apos;s documents, every claim cited.
+            </p>
+          </div>
+        </div>
 
-      {answer && (
-        <div className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
-          <p className="whitespace-pre-wrap text-sm text-zinc-900 dark:text-zinc-50">
-            {answer}
-          </p>
-
-          {citations.length > 0 && (
-            <div className="mt-4 border-t border-zinc-200 pt-3 dark:border-zinc-800">
-              <p className="mb-1 text-xs font-medium text-zinc-500">Sources:</p>
-              {citations.map((c, i) => (
-                <p key={i} className="text-xs text-zinc-500">
-                  [{i + 1}] {c.filename}
-                </p>
-              ))}
+        <div ref={scrollRef} className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto py-2">
+          {exchanges.length === 0 ? (
+            <div className="m-auto max-w-[440px] text-center">
+              <h2 className="text-[22px] leading-[1.2] font-extrabold tracking-[-.02em] text-[var(--text)] text-balance">
+                Drop a PDF. Ask a hard question.
+                <br />
+                Get a <span className="grad-text">cited answer</span>.
+              </h2>
+              <p className="mt-3 text-[13.5px] leading-[1.6] text-[var(--muted)]">
+                Ask in plain language — every answer links back to the exact document it came from.
+              </p>
             </div>
+          ) : (
+            exchanges.map((ex) => (
+              <div key={ex.id} className="flex flex-col gap-3">
+                <QuestionBubble text={ex.question} />
+                <AnswerBubble
+                  content={ex.answer}
+                  citations={ex.citations}
+                  streaming={ex.streaming}
+                  workspaceId={workspaceId}
+                  projectId={projectId}
+                />
+              </div>
+            ))
           )}
         </div>
-      )}
+
+        <div className="shrink-0 pt-3">
+          <AskComposer disabled={asking} onAsk={handleAsk} />
+        </div>
+      </div>
     </div>
   );
 }

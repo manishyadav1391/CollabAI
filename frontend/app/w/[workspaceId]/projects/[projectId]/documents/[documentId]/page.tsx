@@ -1,84 +1,106 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
-import { apiClient } from "@/lib/api-client";
+import { Group, Panel, Separator } from "react-resizable-panels";
+import { useDocuments } from "@/lib/hooks/useDocuments";
+import { useProjectContext } from "@/lib/hooks/useProjectContext";
+import { getCurrentUserId } from "@/lib/auth";
+import { StatusBadge } from "@/components/StatusBadge";
+import { TOPBAR_HEIGHT } from "@/components/dashboard/Topbar";
+import { ArrowLeftIcon } from "@/components/documents/icons";
+import { DocumentStage } from "@/components/viewer/DocumentStage";
+import { CommentsPanel } from "@/components/viewer/CommentsPanel";
+import { MessageIcon, SparkleIcon } from "@/components/ui/icons";
 
-type Comment = {
-  id: string;
-  parent_comment_id: string | null;
-  author_id: string;
-  content: string;
-  status: string;
-};
+export default function DocumentViewerPage() {
+  const { workspaceId, projectId, documentId } = useParams<{
+    workspaceId: string;
+    projectId: string;
+    documentId: string;
+  }>();
+  const { documents, loading } = useDocuments(projectId);
+  const { memberName } = useProjectContext(workspaceId, projectId);
+  const currentUserId = getCurrentUserId();
 
-export default function DocumentDetailPage() {
-  const { documentId } = useParams<{ documentId: string }>();
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [newComment, setNewComment] = useState("");
+  const doc = documents.find((d) => d.id === documentId);
+  const filesHref = `/w/${workspaceId}/projects/${projectId}/documents`;
 
-  function load() {
-    apiClient.get(`/documents/${documentId}/comments`).then(({ data }) => setComments(data));
+  if (loading) {
+    return (
+      <div
+        className="flex items-center justify-center text-[13px] text-[var(--faint)]"
+        style={{ height: `calc(100vh - ${TOPBAR_HEIGHT}px)` }}
+      >
+        Loading document…
+      </div>
+    );
   }
 
-  useEffect(load, [documentId]);
-
-  async function submitComment(e: React.FormEvent) {
-    e.preventDefault();
-    await apiClient.post(`/documents/${documentId}/comments`, { content: newComment });
-    setNewComment("");
-    load();
+  if (!doc) {
+    return (
+      <div
+        className="flex flex-col items-center justify-center gap-3 text-center"
+        style={{ height: `calc(100vh - ${TOPBAR_HEIGHT}px)` }}
+      >
+        <p className="text-[14px] text-[var(--muted)]">This document couldn&apos;t be found.</p>
+        <Link href={filesHref} className="text-[13.5px] font-semibold text-[var(--accent-soft)]">
+          ← Back to documents
+        </Link>
+      </div>
+    );
   }
-
-  async function toggleResolve(comment: Comment) {
-    const endpoint = comment.status === "open" ? "resolve" : "reopen";
-    await apiClient.put(`/comments/${comment.id}/${endpoint}`);
-    load();
-  }
-
-  const topLevel = comments.filter((c) => !c.parent_comment_id);
-  const repliesFor = (id: string) => comments.filter((c) => c.parent_comment_id === id);
 
   return (
-    <div className="mx-auto max-w-2xl px-6 py-10">
-      <h1 className="mb-6 text-2xl font-semibold text-zinc-900 dark:text-zinc-50">
-        Comments
-      </h1>
+    <div className="flex flex-col" style={{ height: `calc(100vh - ${TOPBAR_HEIGHT}px)` }}>
+      <div className="flex shrink-0 items-center gap-3 border-b border-[var(--border)] bg-white px-5 py-[10px]">
+        <Link
+          href={filesHref}
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-[8px] text-[var(--muted)] transition-colors hover:bg-[var(--panel-2)] hover:text-[var(--text)]"
+          aria-label="Back to documents"
+        >
+          <ArrowLeftIcon size={16} />
+        </Link>
+        <h1 className="min-w-0 flex-1 truncate text-[14.5px] font-bold text-[var(--text)]">
+          {doc.current_version?.filename ?? "Untitled document"}
+        </h1>
+        {doc.current_version && doc.current_version.status !== "ready" && (
+          <StatusBadge status={doc.current_version.status} reason={doc.current_version.failure_reason} />
+        )}
 
-      <div className="mb-6 flex flex-col gap-3">
-        {topLevel.map((c) => (
-          <div key={c.id} className="rounded-lg border border-zinc-200 p-3 dark:border-zinc-800">
-            <p className={`text-sm ${c.status === "resolved" ? "text-zinc-400 line-through" : "text-zinc-900 dark:text-zinc-50"}`}>
-              {c.content}
-            </p>
-            <button
-              onClick={() => toggleResolve(c)}
-              className="mt-1 text-xs font-medium text-zinc-500 underline"
-            >
-              {c.status === "open" ? "Mark resolved" : "Reopen"}
-            </button>
+        <span className="h-5 w-px shrink-0 bg-[var(--border)]" />
 
-            {repliesFor(c.id).map((r) => (
-              <div key={r.id} className="ml-4 mt-2 border-l border-zinc-200 pl-3 dark:border-zinc-700">
-                <p className="text-sm text-zinc-700 dark:text-zinc-300">{r.content}</p>
-              </div>
-            ))}
-          </div>
-        ))}
+        <Link
+          href={`/w/${workspaceId}/projects/${projectId}/ai?document=${doc.id}`}
+          className="flex shrink-0 items-center gap-[6px] rounded-[8px] px-[10px] py-[6px] text-[12.5px] font-semibold text-[var(--muted)] transition-colors hover:bg-[var(--panel-2)] hover:text-[var(--text)]"
+        >
+          <SparkleIcon size={13} />
+          Ask AI
+        </Link>
+        <Link
+          href={`/w/${workspaceId}/projects/${projectId}/chat`}
+          className="flex shrink-0 items-center gap-[6px] rounded-[8px] px-[10px] py-[6px] text-[12.5px] font-semibold text-[var(--muted)] transition-colors hover:bg-[var(--panel-2)] hover:text-[var(--text)]"
+        >
+          <MessageIcon size={13} />
+          Chat
+        </Link>
       </div>
 
-      <form onSubmit={submitComment} className="flex gap-2">
-        <input
-          required
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          placeholder="Add a comment…"
-          className="flex-1 rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800"
-        />
-        <button className="rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white dark:bg-zinc-50 dark:text-zinc-900">
-          Post
-        </button>
-      </form>
+      <Group orientation="horizontal" className="min-h-0 flex-1">
+        <Panel defaultSize="70" minSize="40" className="min-w-0">
+          {doc.current_version ? (
+            <DocumentStage key={doc.id} documentId={doc.id} version={doc.current_version} />
+          ) : (
+            <div className="flex h-full items-center justify-center bg-[var(--bg-2)] text-[13px] text-[var(--faint)]">
+              Preparing document…
+            </div>
+          )}
+        </Panel>
+        <Separator className="w-[2px] shrink-0 cursor-col-resize bg-[var(--border)] transition-colors hover:bg-[var(--accent)] focus-visible:bg-[var(--accent)] focus-visible:outline-none" />
+        <Panel defaultSize="30" minSize="22" maxSize="45" className="min-w-0">
+          <CommentsPanel documentId={doc.id} resolveAuthor={(userId) => memberName(userId, currentUserId)} />
+        </Panel>
+      </Group>
     </div>
   );
 }

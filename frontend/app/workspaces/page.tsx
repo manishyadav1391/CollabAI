@@ -26,14 +26,17 @@ export default function WorkspaceSwitcherPage() {
       return;
     }
 
-    apiClient.get<Workspace[]>("/workspaces").then(({ data }) => {
-      if (data.length === 1) {
-        router.replace(`/w/${data[0].id}/dashboard`);
-        return;
-      }
-      setWorkspaces(data);
-      setLoading(false);
-    });
+    apiClient
+      .get<Workspace[]>("/workspaces")
+      .then(({ data }) => {
+        if (data.length === 1) {
+          router.replace(`/w/${data[0].id}/dashboard`);
+          return;
+        }
+        setWorkspaces(data);
+        setLoading(false);
+      })
+      .catch(() => setLoading(false));
   }, [router]);
 
   return (

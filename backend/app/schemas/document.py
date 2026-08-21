@@ -39,6 +39,7 @@ class DocumentResponse(BaseModel):
     project_id: str
     folder_id: str | None
     restricted: bool
+    created_by: str
     current_version: DocumentVersionResponse | None
 
     class Config:

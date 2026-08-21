@@ -51,6 +51,7 @@ def list_documents(db: Session, project_id: str, user_id) -> list[dict]:
             "project_id": str(d.project_id),
             "folder_id": str(d.folder_id) if d.folder_id else None,
             "restricted": d.restricted,
+            "created_by": str(d.created_by),
             "current_version": version,
         })
     return result

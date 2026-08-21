@@ -106,6 +106,52 @@ export function LogOutIcon(props: IconProps) {
   );
 }
 
+export function GlobeIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3a14 14 0 0 1 0 18 14 14 0 0 1 0-18z" />
+    </svg>
+  );
+}
+
+export function LockIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <rect x="4.5" y="10.5" width="15" height="10" rx="2" />
+      <path d="M7.5 10.5V7a4.5 4.5 0 0 1 9 0v3.5" />
+    </svg>
+  );
+}
+
+export function GridIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <rect x="3.5" y="3.5" width="7.5" height="7.5" rx="1.5" />
+      <rect x="13" y="3.5" width="7.5" height="7.5" rx="1.5" />
+      <rect x="3.5" y="13" width="7.5" height="7.5" rx="1.5" />
+      <rect x="13" y="13" width="7.5" height="7.5" rx="1.5" />
+    </svg>
+  );
+}
+
+export function ListIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M8 6h13M8 12h13M8 18h13" />
+      <path d="M3.5 6h.01M3.5 12h.01M3.5 18h.01" strokeWidth={2.6} />
+    </svg>
+  );
+}
+
+export function PlusIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M12 5v14M5 12h14" />
+    </svg>
+  );
+}
+
 export function ChevronDownIcon(props: IconProps) {
   return (
     <svg {...base({ strokeWidth: 2.4, ...props })}>

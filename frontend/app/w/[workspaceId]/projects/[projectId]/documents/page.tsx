@@ -1,153 +1,138 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { useParams } from "next/navigation";
-import axios from "axios";
-import { apiClient } from "@/lib/api-client";
-import { StatusBadge } from "@/components/StatusBadge";
+import { useProjectContext } from "@/lib/hooks/useProjectContext";
+import { useDocuments } from "@/lib/hooks/useDocuments";
+import { getCurrentUserId } from "@/lib/auth";
+import { ProjectPageHeader } from "@/components/projects/ProjectPageHeader";
+import { DropzoneOverlay } from "@/components/documents/DropzoneOverlay";
+import { FileTable } from "@/components/documents/FileTable";
+import { EmptyFilesState } from "@/components/documents/EmptyFilesState";
+import { Toast } from "@/components/ui/Toast";
+import { SearchIcon, FolderPlusIcon } from "@/components/dashboard/icons";
+import { UploadIcon } from "@/components/documents/icons";
 
-
-type DocumentItem = {
-  id: string;
-  current_version: { filename: string; status: string } | null;
-};
-
-export default function DocumentsPage() {
-  // const { projectId } = useParams<{ projectId: string }>();
-  const [documents, setDocuments] = useState<DocumentItem[]>([]);
-  const [uploading, setUploading] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  const documentsRef = useRef<DocumentItem[]>([]);
-  const [query, setQuery] = useState("");
-  const [searchResults, setSearchResults] = useState<any[]>([]);    
-  const { workspaceId, projectId } = useParams<{ workspaceId: string; projectId: string }>();
-
-  function load() {
-    apiClient
-      .get("/documents", { params: { project_id: projectId } })
-      .then(({ data }) => setDocuments(data));
-  }
-
-  useEffect(load, [projectId]);
-
-  useEffect(() => {
-    documentsRef.current = documents;
-  }, [documents]);
-
-  // Documents finish processing asynchronously on a background worker, so
-  // poll while any are still pending/processing to pick up status changes
-  // (e.g. processing -> ready) without requiring a manual page refresh.
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const stillActive = documentsRef.current.some(
-        (doc) => !doc.current_version || ["pending", "processing"].includes(doc.current_version.status)
-      );
-      if (stillActive) load();
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [projectId]);
-
-  async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setUploading(true);
-
-    try {
-      const { data: session } = await apiClient.post("/documents/upload-url", {
-        project_id: projectId,
-        filename: file.name,
-        mime_type: file.type || "application/octet-stream",
-        size_bytes: file.size,
-      });
-
-      // Direct-to-storage upload — bypasses our API server entirely.
-      await axios.put(session.upload_url, file, {
-        headers: { "Content-Type": file.type || "application/octet-stream" },
-      });
-
-      await apiClient.post("/documents/upload-complete", {
-        document_id: session.document_id,
-        version_id: session.version_id,
-      });
-
-      load();
-    } finally {
-      setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    }
-  }
-  async function handleSearch(e: React.FormEvent) {
-  e.preventDefault();
-  const { data } = await apiClient.get("/search", { params: { q: query, project_id: projectId } });
-  setSearchResults(data.results);
+function RowSkeleton() {
+  return (
+    <div className="flex items-center gap-4 border-b border-[var(--border)] px-5 py-[15px] last:border-b-0">
+      <div className="h-[13px] flex-1 animate-pulse rounded-[6px] bg-[var(--panel-3)]" />
+      <div className="h-[13px] w-[70px] animate-pulse rounded-[6px] bg-[var(--panel-3)]" />
+      <div className="h-[13px] w-[110px] animate-pulse rounded-[6px] bg-[var(--panel-3)]" />
+      <div className="h-[20px] w-[90px] animate-pulse rounded-full bg-[var(--panel-3)]" />
+    </div>
+  );
 }
 
+export default function DocumentsPage() {
+  const { workspaceId, projectId } = useParams<{ workspaceId: string; projectId: string }>();
+  const { workspaceName, project, memberName } = useProjectContext(workspaceId, projectId);
+  const { documents, loading, uploadFiles, deleteDocument } = useDocuments(projectId);
+
+  const [query, setQuery] = useState("");
+  const [toast, setToast] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const currentUserId = getCurrentUserId();
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return documents;
+    return documents.filter((d) => d.current_version?.filename.toLowerCase().includes(q));
+  }, [documents, query]);
+
+  function resolveUploader(userId: string) {
+    return memberName(userId, currentUserId);
+  }
+
+  function handleDelete(documentId: string) {
+    const doc = documents.find((d) => d.id === documentId);
+    const name = doc?.current_version?.filename ?? "this document";
+    if (!window.confirm(`Delete "${name}"? This can't be undone.`)) return;
+    deleteDocument(documentId).then(() => setToast("Document deleted"));
+  }
+
   return (
+    <div className="flex flex-col">
+      <ProjectPageHeader
+        workspaceId={workspaceId}
+        projectId={projectId}
+        workspaceName={workspaceName}
+        projectName={project?.name ?? ""}
+      />
 
-    
-    <div className="mx-auto max-w-2xl px-6 py-10">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold text-zinc-900 dark:text-zinc-50">Documents</h1>
-        <a href={`/w/${useParams().workspaceId}/projects/${projectId}/ai`} className="text-sm text-zinc-500 underline">
-  Go to AI Copilot →
-</a>
-        <form onSubmit={handleSearch} className="mb-4 flex gap-2">
-  <input
-    value={query}
-    onChange={(e) => setQuery(e.target.value)}
-    placeholder="Search documents…"
-    className="flex-1 rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800"
-  />
-  <button className="rounded-lg border border-zinc-300 px-4 py-2 text-sm dark:border-zinc-700">
-    Search
-  </button>
-</form>
+      <div className="mx-auto flex w-full max-w-[1180px] flex-col gap-6 px-6 py-8 lg:px-10">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <h1 className="text-[24px] font-extrabold tracking-[-.02em] text-[var(--text)]">Documents</h1>
 
-{searchResults.length > 0 && (
-  <div className="mb-6 flex flex-col gap-2 rounded-lg border border-zinc-200 p-3 dark:border-zinc-800">
-    {searchResults.map((r, i) => (
-      <div key={i} className="text-sm">
-        <span className="font-medium">{r.filename}</span>
-        <span
-          className="ml-2 text-zinc-500"
-          dangerouslySetInnerHTML={{ __html: r.snippet }}
-        />
-      </div>
-    ))}
-  </div>
-)}
-        <label className="cursor-pointer rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white dark:bg-zinc-50 dark:text-zinc-900">
-          {uploading ? "Uploading…" : "+ Upload"}
-          <input
-            ref={fileInputRef}
-            type="file"
-            onChange={handleUpload}
-            className="hidden"
-            disabled={uploading}
+          <div className="flex flex-wrap items-center gap-3">
+            <div className="relative w-full max-w-[260px]">
+              <span className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-[var(--faint)]">
+                <SearchIcon size={14} />
+              </span>
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search files…"
+                className="w-full rounded-[10px] border border-[var(--border)] bg-white py-[8px] pr-3 pl-9 text-[13px] text-[var(--text)] outline-none transition-colors placeholder:text-[var(--faint)] focus:border-[var(--accent)]"
+              />
+            </div>
+
+            <button
+              type="button"
+              disabled
+              title="Coming soon"
+              className="flex cursor-not-allowed items-center gap-[7px] rounded-[var(--r)] border border-[var(--border)] bg-[var(--panel-2)] px-4 py-[9px] text-[13.5px] font-semibold text-[var(--faint)]"
+            >
+              <FolderPlusIcon size={15} />
+              New folder
+            </button>
+
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex items-center gap-[7px] rounded-[var(--r)] px-4 py-[9px] text-[13.5px] font-semibold text-white shadow-[var(--sh-accent)] transition-transform hover:-translate-y-0.5 bg-[image:var(--grad)]"
+            >
+              <UploadIcon size={15} stroke="#fff" />
+              Upload
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              className="hidden"
+              onChange={(e) => {
+                if (e.target.files?.length) uploadFiles(e.target.files);
+                e.target.value = "";
+              }}
+            />
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="overflow-hidden rounded-[16px] border border-[var(--border)] bg-white">
+            <RowSkeleton />
+            <RowSkeleton />
+            <RowSkeleton />
+          </div>
+        ) : documents.length === 0 ? (
+          <EmptyFilesState onUpload={() => fileInputRef.current?.click()} />
+        ) : filtered.length === 0 ? (
+          <p className="rounded-[16px] border border-dashed border-[var(--border-2)] bg-white px-6 py-16 text-center text-[13.5px] text-[var(--muted)]">
+            No files match &quot;{query}&quot;.
+          </p>
+        ) : (
+          <FileTable
+            documents={filtered}
+            workspaceId={workspaceId}
+            projectId={projectId}
+            resolveUploader={resolveUploader}
+            onDelete={handleDelete}
           />
-        </label>
+        )}
       </div>
 
-      <div className="flex flex-col gap-2">
-        {documents.length === 0 && (
-          <p className="text-sm text-zinc-500">No documents yet — upload your first file.</p>
-        )}
-        {documents.map((doc) => (
-         
- < a key={doc.id}
-  href={`/w/${workspaceId}/projects/${projectId}/documents/${doc.id}`}
-  className="flex items-center justify-between rounded-lg border border-zinc-200 p-4 dark:border-zinc-800"
->
-            <span className="text-zinc-900 dark:text-zinc-50">
-              {doc.current_version?.filename ?? "(processing…)"}
-            </span>
-            {doc.current_version && (
-              <StatusBadge status={doc.current_version.status as any} />
-            )}
-          </a>
-        ))}
-      </div>
+      <DropzoneOverlay label={project?.name || "this project"} onDrop={uploadFiles} />
+      <Toast message={toast} onDone={() => setToast(null)} />
     </div>
   );
 }

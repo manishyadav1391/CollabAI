@@ -18,10 +18,13 @@ export function WorkspaceChrome({ children }: { children: ReactNode }) {
       router.push("/login");
       return;
     }
-    apiClient.get("/workspaces").then(({ data }: { data: Workspace[] }) => {
-      const current = data.find((w) => w.id === workspaceId);
-      if (current) setWorkspaceName(current.name);
-    });
+    apiClient
+      .get("/workspaces")
+      .then(({ data }: { data: Workspace[] }) => {
+        const current = data.find((w) => w.id === workspaceId);
+        if (current) setWorkspaceName(current.name);
+      })
+      .catch(() => {});
   }, [workspaceId, router]);
 
   return (
