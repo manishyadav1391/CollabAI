@@ -36,6 +36,12 @@ export type DMThread = {
   last_message_at: string | null;
 };
 
+export type AIConversationSummary = {
+  id: string;
+  title: string;
+  updated_at: string;
+};
+
 export type Project = {
   id: string;
   workspace_id: string;

@@ -1,7 +1,8 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { Group, Panel, Separator } from "react-resizable-panels";
 import { useDocuments } from "@/lib/hooks/useDocuments";
 import { useProjectContext } from "@/lib/hooks/useProjectContext";
@@ -13,12 +14,31 @@ import { DocumentStage } from "@/components/viewer/DocumentStage";
 import { CommentsPanel } from "@/components/viewer/CommentsPanel";
 import { MessageIcon, SparkleIcon } from "@/components/ui/icons";
 
+const MAX_QUOTE_LENGTH = 300;
+
+function quoteFromParam(raw: string | null): string | undefined {
+  if (!raw) return undefined;
+  const trimmed = raw.length > MAX_QUOTE_LENGTH ? `${raw.slice(0, MAX_QUOTE_LENGTH)}…` : raw;
+  return `> ${trimmed.replace(/\n+/g, " ")}\n\n`;
+}
+
 export default function DocumentViewerPage() {
+  return (
+    <Suspense>
+      <DocumentViewerPageInner />
+    </Suspense>
+  );
+}
+
+function DocumentViewerPageInner() {
   const { workspaceId, projectId, documentId } = useParams<{
     workspaceId: string;
     projectId: string;
     documentId: string;
   }>();
+  const searchParams = useSearchParams();
+  const initialPage = searchParams.get("page") ? Number(searchParams.get("page")) : null;
+  const initialComment = quoteFromParam(searchParams.get("quote"));
   const { documents, loading } = useDocuments(projectId);
   const { memberName } = useProjectContext(workspaceId, projectId);
   const currentUserId = getCurrentUserId();
@@ -89,7 +109,7 @@ export default function DocumentViewerPage() {
       <Group orientation="horizontal" className="min-h-0 flex-1">
         <Panel defaultSize="70" minSize="40" className="min-w-0">
           {doc.current_version ? (
-            <DocumentStage key={doc.id} documentId={doc.id} version={doc.current_version} />
+            <DocumentStage key={doc.id} documentId={doc.id} version={doc.current_version} initialPage={initialPage} />
           ) : (
             <div className="flex h-full items-center justify-center bg-[var(--bg-2)] text-[13px] text-[var(--faint)]">
               Preparing document…
@@ -98,7 +118,12 @@ export default function DocumentViewerPage() {
         </Panel>
         <Separator className="w-[2px] shrink-0 cursor-col-resize bg-[var(--border)] transition-colors hover:bg-[var(--accent)] focus-visible:bg-[var(--accent)] focus-visible:outline-none" />
         <Panel defaultSize="30" minSize="22" maxSize="45" className="min-w-0">
-          <CommentsPanel documentId={doc.id} resolveAuthor={(userId) => memberName(userId, currentUserId)} />
+          <CommentsPanel
+            key={doc.id}
+            documentId={doc.id}
+            resolveAuthor={(userId) => memberName(userId, currentUserId)}
+            initialText={initialComment}
+          />
         </Panel>
       </Group>
     </div>

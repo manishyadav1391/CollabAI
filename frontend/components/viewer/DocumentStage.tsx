@@ -15,7 +15,15 @@ function isRenderable(mimeType: string) {
   return mimeType === "application/pdf" || mimeType.startsWith("text/");
 }
 
-export function DocumentStage({ documentId, version }: { documentId: string; version: DocumentVersion }) {
+export function DocumentStage({
+  documentId,
+  version,
+  initialPage,
+}: {
+  documentId: string;
+  version: DocumentVersion;
+  initialPage?: number | null;
+}) {
   const [zoom, setZoom] = useState(1);
   const [downloading, setDownloading] = useState(false);
   const [viewUrl, setViewUrl] = useState<string | null>(null);
@@ -83,7 +91,11 @@ export function DocumentStage({ documentId, version }: { documentId: string; ver
             style={{ width: BASE_WIDTH * zoom, minHeight: 1000 }}
           >
             {viewUrl ? (
-              <iframe src={viewUrl} title={version.filename} className="h-[1400px] w-full border-0" />
+              <iframe
+                src={initialPage ? `${viewUrl}#page=${initialPage}` : viewUrl}
+                title={version.filename}
+                className="h-[1400px] w-full border-0"
+              />
             ) : (
               <div className="flex h-[1400px] items-center justify-center text-[13px] text-[var(--faint)]">
                 Loading preview…

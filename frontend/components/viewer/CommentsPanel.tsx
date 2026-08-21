@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent, type KeyboardEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from "react";
 import { useComments } from "@/lib/hooks/useComments";
 import { CommentThread } from "@/components/viewer/CommentThread";
 
@@ -21,12 +21,20 @@ function ThreadSkeleton() {
 export function CommentsPanel({
   documentId,
   resolveAuthor,
+  initialText,
 }: {
   documentId: string;
   resolveAuthor: (userId: string) => string;
+  initialText?: string;
 }) {
   const { comments, loading, addComment, toggleResolve } = useComments(documentId);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(initialText ?? "");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (initialText) textareaRef.current?.focus();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const topLevel = comments.filter((c) => !c.parent_comment_id);
   const repliesFor = (id: string) => comments.filter((c) => c.parent_comment_id === id);
@@ -54,10 +62,11 @@ export function CommentsPanel({
         </div>
         <form onSubmit={submit} className="flex flex-col gap-2">
           <textarea
+            ref={textareaRef}
             value={text}
             onChange={(e) => setText(e.target.value)}
             onKeyDown={handleKeyDown}
-            rows={2}
+            rows={initialText ? 4 : 2}
             placeholder="Add a comment… (⌘+Enter to send)"
             className="w-full resize-none rounded-[10px] border border-[var(--border)] bg-[var(--panel-2)] px-3 py-2 text-[13px] text-[var(--text)] outline-none placeholder:text-[var(--faint)] focus:border-[var(--accent)] focus:bg-white"
           />

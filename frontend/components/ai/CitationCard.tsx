@@ -4,13 +4,26 @@ export function CitationCard({
   index,
   filename,
   pageOrSection,
-  href,
+  workspaceId,
+  projectId,
+  documentId,
+  quote,
 }: {
   index: number;
   filename: string;
   pageOrSection: string | null;
-  href: string;
+  workspaceId: string;
+  projectId: string;
+  documentId: string;
+  quote: string | null;
 }) {
+  const params = new URLSearchParams();
+  const pageNumber = pageOrSection?.match(/\d+/)?.[0];
+  if (pageNumber) params.set("page", pageNumber);
+  if (quote) params.set("quote", quote);
+  const query = params.toString();
+  const href = `/w/${workspaceId}/projects/${projectId}/documents/${documentId}${query ? `?${query}` : ""}`;
+
   return (
     <Link
       href={href}
@@ -20,7 +33,7 @@ export function CitationCard({
         SOURCE [{index}] · {filename.toUpperCase()}
         {pageOrSection ? ` · ${pageOrSection.toUpperCase()}` : ""}
       </div>
-      <div className="mt-[8px] text-[12px] font-semibold text-[var(--accent-soft)]">Open document →</div>
+      <div className="mt-[8px] text-[12px] font-semibold text-[var(--accent-soft)]">Open &amp; comment →</div>
     </Link>
   );
 }

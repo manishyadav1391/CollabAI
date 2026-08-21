@@ -29,30 +29,35 @@ CHUNK_SIZE = 800
 CHUNK_OVERLAP = 100
 
 
-def ocr_pdf(file_bytes: bytes) -> str:
-    """Rasterizes each page and runs OCR — for scanned/image-only PDFs with no text layer."""
+def ocr_pdf_pages(file_bytes: bytes) -> list[str]:
+    """Rasterizes each page and runs OCR — for scanned/image-only PDFs with
+    no text layer. One string per page, page order preserved."""
     pdf = fitz.open(stream=file_bytes, filetype="pdf")
     pages_text = []
     for page in pdf:
         pixmap = page.get_pixmap(dpi=300)
         image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
         pages_text.append(pytesseract.image_to_string(image))
-    return "\n".join(pages_text)
+    return pages_text
 
 
-def extract_text(file_bytes: bytes, filename: str) -> str:
+def extract_text_pages(file_bytes: bytes, filename: str) -> list[tuple[int | None, str]]:
+    """Returns (page_number, text) pairs so chunks can cite the exact page
+    they came from. page_number is 1-based for PDFs; formats with no
+    natural page concept (docx, plain text) come back as a single page
+    with page_number=None, so their citations just won't show a page."""
     lower = filename.lower()
     if lower.endswith(".pdf"):
         reader = PdfReader(io.BytesIO(file_bytes))
-        text = "\n".join(page.extract_text() or "" for page in reader.pages)
-        if not text.strip():
-            text = ocr_pdf(file_bytes)
-        return text
+        pages = [page.extract_text() or "" for page in reader.pages]
+        if not any(p.strip() for p in pages):
+            pages = ocr_pdf_pages(file_bytes)
+        return [(i + 1, text) for i, text in enumerate(pages)]
     elif lower.endswith(".docx"):
         doc = docx_lib.Document(io.BytesIO(file_bytes))
-        return "\n".join(p.text for p in doc.paragraphs)
+        return [(None, "\n".join(p.text for p in doc.paragraphs))]
     else:
-        return file_bytes.decode("utf-8", errors="ignore")
+        return [(None, file_bytes.decode("utf-8", errors="ignore"))]
 
 
 def chunk_text(text: str) -> list[str]:
@@ -63,6 +68,12 @@ def chunk_text(text: str) -> list[str]:
         chunks.append(text[start:end])
         start = end - CHUNK_OVERLAP
     return [c.strip() for c in chunks if c.strip()]
+
+
+def chunk_pages(pages: list[tuple[int | None, str]]) -> list[tuple[str, int | None]]:
+    """Chunks each page's text independently so every chunk can be tagged
+    with the page it came from — chunks never span a page boundary."""
+    return [(chunk, page_number) for page_number, text in pages for chunk in chunk_text(text)]
 
 
 def run(document_id: str, version_id: str, job_id: str) -> None:
@@ -78,8 +89,8 @@ def run(document_id: str, version_id: str, job_id: str) -> None:
 
         try:
             file_bytes = storage.download_file(version.object_storage_key)
-            text = extract_text(file_bytes, version.filename)
-            if not text.strip():
+            text_pages = extract_text_pages(file_bytes, version.filename)
+            if not any(text.strip() for _, text in text_pages):
                 raise ValueError("No extractable text found in file")
 
             # Idempotency: wipe any chunks from a previous (failed/retried)
@@ -87,12 +98,13 @@ def run(document_id: str, version_id: str, job_id: str) -> None:
             db.query(DocumentChunk).filter(DocumentChunk.document_version_id == version_id).delete()
             db.commit()
 
-            for chunk in chunk_text(text):
+            for chunk, page_number in chunk_pages(text_pages):
                 embedding = embed_text(chunk)
                 db.add(DocumentChunk(
                     document_version_id=version_id,
                     project_id=document.project_id,
                     chunk_text=chunk,
+                    page_or_section=f"Page {page_number}" if page_number else None,
                     embedding=embedding,
                 ))
             db.commit()

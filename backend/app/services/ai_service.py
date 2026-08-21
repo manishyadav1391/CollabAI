@@ -76,6 +76,18 @@ def _retrieve_chunks(db: Session, user_id, project_id: str, question: str) -> li
     ]
 
 
+def start_conversation(db: Session, user_id, project_id: str):
+    return ai_message_repo.create_conversation(db, user_id, project_id)
+
+
+def get_conversation(db: Session, user_id, project_id: str, conversation_id: str):
+    return ai_message_repo.get_conversation(db, user_id, project_id, conversation_id)
+
+
+def list_conversations(db: Session, user_id, project_id: str) -> list[dict]:
+    return ai_message_repo.list_conversations(db, user_id, project_id)
+
+
 def _build_prompt(question: str, chunks: list[dict]) -> str:
     if not chunks:
         return question
@@ -94,18 +106,21 @@ def _build_prompt(question: str, chunks: list[dict]) -> str:
     )
 
 
-def ask_stream(db: Session, user_id, project_id: str, question: str):
+def ask_stream(db: Session, user_id, project_id: str, question: str, conversation_id):
     """
-    Generator yielding SSE-formatted strings. Yields token deltas as they
-    arrive, then one final 'citations' event once the answer is complete.
+    Generator yielding SSE-formatted strings: one 'conversation' event up
+    front (so the caller learns the id immediately for a brand-new chat),
+    then token deltas as they arrive, then one final 'citations' event.
     """
+    yield f"data: {json.dumps({'type': 'conversation', 'conversation_id': str(conversation_id)})}\n\n"
+
     chunks = _retrieve_chunks(db, user_id, project_id, question)
 
     if not chunks:
         message = "I don't have relevant information in the documents you have access to."
         yield f"data: {json.dumps({'type': 'token', 'text': message})}\n\n"
         yield f"data: {json.dumps({'type': 'citations', 'citations': []})}\n\n"
-        _persist(db, user_id, project_id, question, message, [])
+        _persist(db, conversation_id, question, message, [])
         return
 
     prompt = _build_prompt(question, chunks)
@@ -128,23 +143,28 @@ def ask_stream(db: Session, user_id, project_id: str, question: str):
 
     # Every retrieved chunk was fed to the model as context, so every one of
     # them is a legitimate citation — trusting the model to echo [n] markers
-    # inline is fragile and drops sources whenever it doesn't comply.
+    # inline is fragile and drops sources whenever it doesn't comply. The
+    # excerpt travels with the citation so the frontend can quote it when
+    # the user jumps off to comment on the source document.
     citations = [
-        {"document_id": c["document_id"], "filename": c["filename"], "page_or_section": c["page_or_section"]}
+        {
+            "document_id": c["document_id"],
+            "filename": c["filename"],
+            "page_or_section": c["page_or_section"],
+            "chunk_text": c["chunk_text"],
+        }
         for c in chunks
     ]
 
     yield f"data: {json.dumps({'type': 'citations', 'citations': citations})}\n\n"
-    _persist(db, user_id, project_id, question, full_answer, citations)
+    _persist(db, conversation_id, question, full_answer, citations)
 
 
-def _persist(db: Session, user_id, project_id: str, question: str, answer: str, citations: list[dict]):
-    conversation = ai_message_repo.get_or_create_ai_conversation(db, user_id, project_id)
-
-    db.add(AIMessage(conversation_id=conversation.id, role="user", content=question))
-    db.add(AIMessage(conversation_id=conversation.id, role="assistant", content=answer, citations=citations))
+def _persist(db: Session, conversation_id, question: str, answer: str, citations: list[dict]):
+    db.add(AIMessage(conversation_id=conversation_id, role="user", content=question))
+    db.add(AIMessage(conversation_id=conversation_id, role="assistant", content=answer, citations=citations))
     db.commit()
 
 
-def get_history(db: Session, user_id, project_id: str, limit: int = 50) -> list[AIMessage]:
-    return ai_message_repo.list_history(db, user_id, project_id, limit)
+def get_messages(db: Session, conversation_id, limit: int = 100) -> list[AIMessage]:
+    return ai_message_repo.list_messages(db, conversation_id, limit)

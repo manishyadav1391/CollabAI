@@ -1,9 +1,17 @@
+"use client";
+
+import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { SparkleIcon } from "@/components/ui/icons";
+import { ChevronDownIcon, SparkleIcon } from "@/components/ui/icons";
 import { CitationCard } from "@/components/ai/CitationCard";
 
-export type Citation = { document_id: string; filename: string; page_or_section: string | null };
+export type Citation = {
+  document_id: string;
+  filename: string;
+  page_or_section: string | null;
+  chunk_text?: string | null;
+};
 
 const markdownComponents = {
   h1: (props: React.ComponentPropsWithoutRef<"h1">) => (
@@ -59,6 +67,8 @@ export function AnswerBubble({
   workspaceId: string;
   projectId: string;
 }) {
+  const [showSources, setShowSources] = useState(false);
+
   return (
     <div
       className="max-w-[88%] rounded-[14px_14px_14px_4px] border border-[var(--border)] bg-[var(--panel-2)] p-4"
@@ -69,12 +79,8 @@ export function AnswerBubble({
           <SparkleIcon size={12} stroke="#fff" strokeWidth={2.4} />
         </span>
         <span className="text-[12px] font-bold text-[var(--text)]">CollabAI</span>
-        {!streaming && (
-          <span className="font-mono text-[10px] text-[var(--faint)]">
-            {citations.length > 0
-              ? `grounded in ${citations.length} passage${citations.length === 1 ? "" : "s"}`
-              : "no matching passages"}
-          </span>
+        {!streaming && citations.length === 0 && (
+          <span className="font-mono text-[10px] text-[var(--faint)]">no matching passages</span>
         )}
       </div>
 
@@ -90,17 +96,37 @@ export function AnswerBubble({
         )}
       </div>
 
-      {citations.length > 0 && (
-        <div className="mt-[14px] flex flex-wrap gap-[10px]">
-          {citations.map((c, i) => (
-            <CitationCard
-              key={c.document_id + i}
-              index={i + 1}
-              filename={c.filename}
-              pageOrSection={c.page_or_section}
-              href={`/w/${workspaceId}/projects/${projectId}/documents/${c.document_id}`}
+      {!streaming && citations.length > 0 && (
+        <div className="mt-[12px]">
+          <button
+            type="button"
+            onClick={() => setShowSources((v) => !v)}
+            className="flex items-center gap-[6px] rounded-[8px] px-[2px] py-1 font-mono text-[11px] font-bold text-[var(--accent-soft)] transition-colors hover:text-[var(--text)]"
+          >
+            {showSources ? "Hide" : "Show"} {citations.length} source{citations.length === 1 ? "" : "s"}
+            <ChevronDownIcon
+              size={13}
+              strokeWidth={2.4}
+              style={{ transform: showSources ? "rotate(180deg)" : "none", transition: "transform .15s" }}
             />
-          ))}
+          </button>
+
+          {showSources && (
+            <div className="mt-[10px] flex flex-wrap gap-[10px]">
+              {citations.map((c, i) => (
+                <CitationCard
+                  key={c.document_id + i}
+                  index={i + 1}
+                  filename={c.filename}
+                  pageOrSection={c.page_or_section}
+                  workspaceId={workspaceId}
+                  projectId={projectId}
+                  documentId={c.document_id}
+                  quote={c.chunk_text ?? null}
+                />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>

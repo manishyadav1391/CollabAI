@@ -1,0 +1,48 @@
+# Web framework
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+starlette
+
+# Database / ORM
+sqlalchemy
+alembic
+asyncpg
+psycopg2-binary
+pgvector
+
+# Auth / security
+python-jose[cryptography]
+bcrypt
+
+# Queue / cache
+redis
+rq
+
+# Object storage (MinIO, S3-compatible)
+boto3
+botocore
+
+# Embeddings / local LLM
+--extra-index-url https://download.pytorch.org/whl/cpu
+sentence-transformers
+torch
+ollama
+
+# Document processing / OCR
+pypdf
+python-docx
+pymupdf
+pytesseract
+pillow
+
+# Email
+aiosmtplib
+
+# File uploads
+python-multipart
+
+# Testing
+pytest
+pytest-asyncio
