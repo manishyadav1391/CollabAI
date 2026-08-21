@@ -1,26 +1,227 @@
 @import "tailwindcss";
 
+/* ============================================================
+   CollabAI — Light Premium design tokens
+   Built on the Unified ToolHub design system, re-based onto a
+   light canvas. Dark mode is not used anywhere in this product.
+   Reference: docs/style.md
+   ============================================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* surfaces */
+  --bg: #fafafb;
+  --bg-2: #f3f3f7;
+  --panel: #ffffff;
+  --panel-2: #f7f7fa;
+  --panel-3: #ededf3;
+
+  /* hairlines */
+  --border: rgba(18, 18, 40, 0.09);
+  --border-2: rgba(18, 18, 40, 0.18);
+
+  /* text */
+  --text: #111119;
+  --muted: #5b5b6b;
+  --faint: #8b8b99;
+
+  /* accent (indigo-violet), shared with dark tokens */
+  --accent: #7c6cff;
+  --accent-2: #22d3ee;
+  --violet: #a855f7;
+  --accent-soft: #6152e8;
+
+  /* status */
+  --green: #0f9b6c;
+  --green-bg: rgba(52, 211, 153, 0.14);
+  --red: #d43d57;
+  --red-bg: rgba(251, 113, 133, 0.14);
+  --amber: #a06a00;
+  --amber-bg: rgba(251, 191, 36, 0.18);
+  --info: #0b7f96;
+  --info-bg: rgba(34, 211, 238, 0.16);
+
+  /* signature gradient — the one brand gradient, never duplicate */
+  --grad: linear-gradient(100deg, #7c6cff, #a855f7, #22d3ee);
+
+  /* shadows */
+  --sh-1: 0 1px 2px rgba(18, 18, 40, 0.05), 0 8px 24px -16px rgba(18, 18, 40, 0.28);
+  --sh-2: 0 2px 6px rgba(18, 18, 40, 0.06), 0 30px 60px -30px rgba(18, 18, 40, 0.35);
+  --sh-accent: 0 10px 30px -14px rgba(124, 108, 255, 0.65);
+  --selection: rgba(124, 108, 255, 0.22);
+
+  /* type */
+  --font: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --mono: var(--font-jetbrains-mono), Consolas, Monaco, monospace;
+
+  /* radii */
+  --r-sm: 8px;
+  --r: 12px;
+  --r-lg: 18px;
+  --r-pill: 100px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+
+  /* layout */
+  --content-w: 1180px;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-jetbrains-mono);
+  --color-bg: var(--bg);
+  --color-panel: var(--panel);
+  --color-text: var(--text);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--selection);
+}
+
+a {
+  color: var(--accent-soft);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--violet);
+}
+
+@keyframes om-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes om-float-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(40px, -30px, 0) scale(1.08);
+  }
+}
+
+@keyframes om-float-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-50px, 26px, 0) scale(1.12);
+  }
+}
+
+@keyframes om-rise {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes om-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes om-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes om-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes om-grid-pan {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 52px 52px;
+  }
+}
+
+@keyframes om-square-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(22px, -18px, 0) rotate(10deg);
+  }
+}
+
+@keyframes om-square-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate3d(-20px, 20px, 0) rotate(-9deg);
+  }
+}
+
+/* signature gradient headline text */
+.grad-text {
+  background: linear-gradient(100deg, #7c6cff, #a855f7, #22d3ee, #7c6cff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: om-shimmer 6s linear infinite;
+}
+
+.rise {
+  animation: om-rise 0.8s var(--ease-out) both;
+}
+
+.marquee-track {
+  animation: om-marquee 26s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
 }

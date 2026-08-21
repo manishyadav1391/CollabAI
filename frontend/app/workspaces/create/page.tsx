@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import axios from "axios";
 import { apiClient } from "@/lib/api-client";
+import { HexagonIcon } from "@/components/ui/icons";
+import { Field } from "@/components/ui/Field";
+import { Input } from "@/components/ui/Input";
+import { Banner } from "@/components/ui/Banner";
+import { Button } from "@/components/ui/Button";
 
 export default function CreateWorkspacePage() {
   const router = useRouter();
@@ -18,45 +25,58 @@ export default function CreateWorkspacePage() {
     try {
       await apiClient.post("/workspaces", { name });
       router.push("/workspaces");
-    } catch (err: any) {
-      setError(err.response?.data?.detail ?? "Failed to create workspace");
+    } catch (err) {
+      const detail = axios.isAxiosError(err) ? err.response?.data?.detail : undefined;
+      setError(detail ?? "Failed to create workspace");
     } finally {
       setLoading(false);
     }
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 px-6 dark:bg-black">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-[var(--bg)] px-6 py-16">
+      <Link href="/" className="mb-10 flex items-center gap-[10px] text-[var(--text)]">
+        <span className="flex h-[30px] w-[30px] items-center justify-center rounded-[9px] bg-[image:var(--grad)] shadow-[var(--sh-accent)]">
+          <HexagonIcon size={16} stroke="#fff" />
+        </span>
+        <span className="text-[17px] font-extrabold tracking-[-.02em]">CollabAI</span>
+      </Link>
+
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-sm rounded-xl border border-zinc-200 bg-white p-8 shadow-sm dark:border-zinc-800 dark:bg-zinc-900"
+        className="w-full max-w-[400px] rounded-[18px] border border-[var(--border)] bg-white p-[34px] shadow-[var(--sh-1)]"
       >
-        <h1 className="mb-6 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
+        <h1 className="text-[22px] font-extrabold tracking-[-.02em] text-[var(--text)]">
           Create a workspace
         </h1>
+        <p className="mt-[6px] text-[13.5px] text-[var(--muted)]">
+          A workspace holds your team&apos;s projects, documents, and chat.
+        </p>
 
-        <label className="mb-1 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-          Workspace name
-        </label>
-        <input
-          required
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Acme Corporation"
-          className="mb-4 w-full rounded-lg border border-zinc-300 px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-800"
-        />
+        <div className="mt-7 flex flex-col gap-4">
+          <Field label="Workspace name">
+            <Input
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Acme Corporation"
+              autoFocus
+            />
+          </Field>
 
-        {error && (
-          <p className="mb-4 text-sm text-red-600 dark:text-red-400">{error}</p>
-        )}
+          {error && <Banner>{error}</Banner>}
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full rounded-lg bg-zinc-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-zinc-50 dark:text-zinc-900"
+          <Button type="submit" disabled={loading} className="mt-1 w-full">
+            {loading ? "Creating…" : "Create workspace"}
+          </Button>
+        </div>
+
+        <Link
+          href="/workspaces"
+          className="mt-6 block text-center text-[13.5px] font-medium text-[var(--muted)] hover:text-[var(--text)]"
         >
-          {loading ? "Creating…" : "Create workspace"}
-        </button>
+          ← Back to workspaces
+        </Link>
       </form>
     </div>
   );
