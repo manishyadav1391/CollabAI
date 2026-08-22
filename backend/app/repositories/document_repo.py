@@ -38,6 +38,12 @@ def mark_version_status(db: Session, version_id: str, status: str, failure_reaso
     db.commit()
 
 
+def set_multipart_upload_id(db: Session, version_id: str, upload_id: str | None) -> None:
+    version = db.query(DocumentVersion).filter(DocumentVersion.id == version_id).first()
+    version.multipart_upload_id = upload_id
+    db.commit()
+
+
 def get_by_id(db: Session, document_id: str) -> Document | None:
     return db.query(Document).filter(Document.id == document_id).first()
 
@@ -46,6 +52,15 @@ def get_version(db: Session, version_id: str) -> DocumentVersion | None:
     if not version_id:
         return None
     return db.query(DocumentVersion).filter(DocumentVersion.id == version_id).first()
+
+
+def list_versions(db: Session, document_id: str) -> list[DocumentVersion]:
+    return (
+        db.query(DocumentVersion)
+        .filter(DocumentVersion.document_id == document_id)
+        .order_by(DocumentVersion.uploaded_at.desc())
+        .all()
+    )
 
 
 def list_by_project(db: Session, project_id: str) -> list[Document]:

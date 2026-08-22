@@ -33,6 +33,10 @@ class RoleChangeRequest(BaseModel):
     role: str
 
 
+class TransferOwnershipRequest(BaseModel):
+    new_owner_id: uuid.UUID
+
+
 class InvitePreviewResponse(BaseModel):
     workspace_id: uuid.UUID
     workspace_name: str

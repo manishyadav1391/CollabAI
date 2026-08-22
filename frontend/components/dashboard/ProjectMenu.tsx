@@ -8,10 +8,12 @@ export function ProjectMenu({
   workspaceId,
   projectId,
   isAdmin,
+  onDeleteRequested,
 }: {
   workspaceId: string;
   projectId: string;
   isAdmin: boolean;
+  onDeleteRequested?: () => void;
 }) {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -58,12 +60,16 @@ export function ProjectMenu({
             <UserPlusIcon size={14} />
             Manage members
           </Link>
-          {isAdmin && (
+          {isAdmin && onDeleteRequested && (
             <button
               type="button"
-              disabled
-              title="Coming soon"
-              className="flex w-full cursor-not-allowed items-center gap-[9px] px-4 py-[9px] text-left text-[13px] text-[var(--red)] opacity-50"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setOpen(false);
+                onDeleteRequested();
+              }}
+              className="flex w-full items-center gap-[9px] px-4 py-[9px] text-left text-[13px] text-[var(--red)] hover:bg-[var(--red-bg)]"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13" />

@@ -1,0 +1,618 @@
+INFO:     Will watch for changes in these directories: ['C:\\CollabAI\\CollabAI\\backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [21148] using WatchFiles
+warning: The `fitz` API is deprecated and will be removed in future. Use `import pymupdf` instead.
+INFO:     Started server process [10988]
+INFO:     Waiting for application startup.
+2026-08-22 12:36:36,754 INFO [request_id=-] collabai: CollabAI API starting up (environment=local)
+2026-08-22 12:36:36,921 WARNING [request_id=-] collabai: put_bucket_cors is not implemented by the storage provider. Skipping. If you encounter CORS issues in the browser, configure CORS on your storage server directly.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:35044 - "GET /health HTTP/1.1" 200 OK
+WARNING:  WatchFiles detected changes in 'app\models\document_permission.py'. Reloading...
+INFO:     127.0.0.1:36474 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52960 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32429 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:41870 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 50060) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczODIxMjYsInR5cGUiOiJhY2Nlc3MifQ.aF9L0uGppWrCJihl2S-HS2mpF1_VdUZ5ytV-BZvZlTw" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:36474 - "GET /notifications/unread-count HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:52960 - "GET /notifications HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:41870 - "GET /notifications/unread-count HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:36474 - "GET /notifications HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:36474 - "OPTIONS /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26250 - "GET /notifications HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:26250 - "GET /notifications/unread-count HTTP/1.1" 401 Unauthorized
+INFO:     ('127.0.0.1', 20681) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczODIxMjYsInR5cGUiOiJhY2Nlc3MifQ.aF9L0uGppWrCJihl2S-HS2mpF1_VdUZ5ytV-BZvZlTw" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:36474 - "POST /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36474 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62722 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31491 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54471 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54641 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64549 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13035 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 18666) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczODIyNTAsInR5cGUiOiJhY2Nlc3MifQ.yRmVzetdxBZX3tLMP3G0FsAXJDgcTfAIBL6qDe7iSKI" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     127.0.0.1:62722 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31491 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54471 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54641 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13035 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64549 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/3c52d28a-8b4c-4284-86c3-f0b97d6478b6/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62722 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31491 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54471 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54641 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/3c52d28a-8b4c-4284-86c3-f0b97d6478b6/history HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 3619) - "WebSocket /ws/dm/13cdd4dd-3be3-4183-9f4b-1643262cbafb/3c52d28a-8b4c-4284-86c3-f0b97d6478b6?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczODIyNTAsInR5cGUiOiJhY2Nlc3MifQ.yRmVzetdxBZX3tLMP3G0FsAXJDgcTfAIBL6qDe7iSKI" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:64549 - "GET /notifications HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62722 - "GET /workspaces HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:13035 - "GET /notifications/unread-count HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54471 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54641 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:31491 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54641 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:31491 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54471 - "GET /notifications/unread-count HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62722 - "GET /notifications HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:64549 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/3c52d28a-8b4c-4284-86c3-f0b97d6478b6/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:13035 - "GET /workspaces HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:31491 - "OPTIONS /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13035 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/3c52d28a-8b4c-4284-86c3-f0b97d6478b6/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62722 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/3c52d28a-8b4c-4284-86c3-f0b97d6478b6/history HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54471 - "GET /workspaces HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54641 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:64549 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:13035 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/3c52d28a-8b4c-4284-86c3-f0b97d6478b6/read HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:62722 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/3c52d28a-8b4c-4284-86c3-f0b97d6478b6/read HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54471 - "GET /workspaces HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54641 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:31491 - "POST /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31491 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11028 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11028 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11028 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11028 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 1029) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczODUwNjUsInR5cGUiOiJhY2Nlc3MifQ.wjW2SAmL3GOUUcCUiPyMLa5UpjEJ0g2HNpq8UcvNgus" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:57152 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64162 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57698 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11028 - "OPTIONS /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64162 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57698 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58514 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57152 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58514 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11028 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11028 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:12906 - "OPTIONS /notifications/a7a690b4-3d9c-4976-8ad7-e1ccc41c51de/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:12906 - "PUT /notifications/a7a690b4-3d9c-4976-8ad7-e1ccc41c51de/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:12906 - "OPTIONS /notifications/mark-all-read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:27587 - "PUT /notifications/mark-all-read HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:2482 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:2482 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 47365) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczODUwNjUsInR5cGUiOiJhY2Nlc3MifQ.wjW2SAmL3GOUUcCUiPyMLa5UpjEJ0g2HNpq8UcvNgus" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:38074 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40604 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40604 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38074 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:2482 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50949 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50949 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38140 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38140 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:2482 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60170 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8142 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8301 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47215 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60170 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8142 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47215 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60170 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8142 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47215 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8142 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47215 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/history HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 15736) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczODQ4NzUsInR5cGUiOiJhY2Nlc3MifQ.YimY_148Hf-zyxO0KIFm-GbvH6y4ukwWYbQa_HnGBw0" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:47215 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+C:\CollabAI\CollabAI\backend\app\repositories\message_repo.py:67: SAWarning: Coercing Subquery object into a select() for use in IN(); please pass a select() construct explicitly
+  ConversationParticipant.conversation_id.in_(my_conversation_ids),
+INFO:     127.0.0.1:49674 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 18654) - "WebSocket /ws/dm/13cdd4dd-3be3-4183-9f4b-1643262cbafb/ef6d07f4-35da-424f-9db4-ab2cdff02574?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczODQ4NzUsInR5cGUiOiJhY2Nlc3MifQ.YimY_148Hf-zyxO0KIFm-GbvH6y4ukwWYbQa_HnGBw0" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:7591 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38365 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8142 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38365 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7591 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8142 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8142 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:47215 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:46712 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8142 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49674 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11023 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28555 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44642 - "PUT /notifications/mark-all-read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54762 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54762 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "OPTIONS /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54762 - "OPTIONS /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3337 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34569 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62825 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3337 - "GET /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54762 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3337 - "GET /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54762 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54762 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3337 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:23366 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34569 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54762 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34569 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/read HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 12714) - "WebSocket /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczODUwNjUsInR5cGUiOiJhY2Nlc3MifQ.wjW2SAmL3GOUUcCUiPyMLa5UpjEJ0g2HNpq8UcvNgus" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:3337 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:23366 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54762 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62825 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34569 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54762 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 14689) - "WebSocket /ws/dm/13cdd4dd-3be3-4183-9f4b-1643262cbafb/3c52d28a-8b4c-4284-86c3-f0b97d6478b6?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczODUwNjUsInR5cGUiOiJhY2Nlc3MifQ.wjW2SAmL3GOUUcCUiPyMLa5UpjEJ0g2HNpq8UcvNgus" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:48326 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/3c52d28a-8b4c-4284-86c3-f0b97d6478b6/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:48326 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/3c52d28a-8b4c-4284-86c3-f0b97d6478b6/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54762 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 21906) - "WebSocket /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczODUwNjUsInR5cGUiOiJhY2Nlc3MifQ.wjW2SAmL3GOUUcCUiPyMLa5UpjEJ0g2HNpq8UcvNgus" [accepted]
+INFO:     connection closed
+INFO:     ('127.0.0.1', 6273) - "WebSocket /ws/dm/13cdd4dd-3be3-4183-9f4b-1643262cbafb/3c52d28a-8b4c-4284-86c3-f0b97d6478b6?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczODUwNjUsInR5cGUiOiJhY2Nlc3MifQ.wjW2SAmL3GOUUcCUiPyMLa5UpjEJ0g2HNpq8UcvNgus" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:26615 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/3c52d28a-8b4c-4284-86c3-f0b97d6478b6/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13418 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26615 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/3c52d28a-8b4c-4284-86c3-f0b97d6478b6/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26615 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13418 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11970 - "POST /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42306 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62977 - "POST /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:5762 - "POST /workspaces/ebb24293-3a89-4a37-8ee5-c7f7bcb43f5a/invites HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9069 - "POST /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9071 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9073 - "POST /workspaces/ebb24293-3a89-4a37-8ee5-c7f7bcb43f5a/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10083 - "GET /workspaces/ebb24293-3a89-4a37-8ee5-c7f7bcb43f5a/members HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 10090) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI5ZTA5OWJlMy0yYWJlLTRiMjgtYTdhNC1jNmUyY2EyMThmNTgiLCJleHAiOjE3ODczODU0ODcsInR5cGUiOiJhY2Nlc3MifQ.Vw_v_v9c8DVCgUx8A4_1_ysoERspxnp_qry-e34V6O4" [accepted]
+INFO:     connection open
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 243, in run_asgi
+    result = await self.app(self.scope, self.asgi_receive, self.asgi_send)  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py", line 152, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\base.py", line 100, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 362, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 95, in app
+    await wrap_app_handling_exceptions(app, session)(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 93, in app
+    await func(session)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py", line 383, in app
+    await dependant.call(**solved_result.values)
+  File "C:\CollabAI\CollabAI\backend\app\routers\chat_ws.py", line 151, in dm_websocket
+    await _relay(websocket, conversation, user_id)
+  File "C:\CollabAI\CollabAI\backend\app\routers\chat_ws.py", line 44, in _relay
+    conversation_id = conversation.id
+                      ^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\attributes.py", line 569, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\attributes.py", line 1096, in get
+    value = self._fire_loader_callables(state, key, passive)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\attributes.py", line 1126, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\state.py", line 828, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\loading.py", line 1607, in load_scalar_attributes
+    raise orm_exc.DetachedInstanceError(
+sqlalchemy.orm.exc.DetachedInstanceError: Instance <Conversation at 0x1aa22b2d7d0> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: https://sqlalche.me/e/20/bhk3)
+INFO:     connection open
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:2366 - "GET /health HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:13649 - "POST /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16610 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53853 - "POST /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31674 - "POST /workspaces/57c99614-2113-44cb-8bec-aaadb080cf9d/invites HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 1319, in _checkout
+    raise exc.InvalidatePoolError()
+sqlalchemy.exc.InvalidatePoolError: ()
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py", line 3319, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 1353, in _checkout
+    with util.safe_reraise():
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 1350, in _checkout
+    fairy._connection_record.get_connection()
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 837, in get_connection
+    self.__connect()
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\psycopg2\__init__.py", line 135, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+psycopg2.OperationalError: connection to server at "localhost" (::1), port 5433 failed: FATAL:  the database system is in recovery mode
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\uvicorn\protocols\http\httptools_impl.py", line 409, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py", line 187, in __call__
+    raise exc
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\cors.py", line 85, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\base.py", line 173, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\contextlib.py", line 155, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\base.py", line 175, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\CollabAI\CollabAI\backend\app\core\logging.py", line 54, in dispatch
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\base.py", line 153, in call_next
+    raise app_exc
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\base.py", line 140, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py", line 291, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\dependencies\utils.py", line 640, in solve_dependencies
+    solved = await run_in_threadpool(call, **solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py", line 2405, in run_sync_in_worker_thread
+    return await future
+           ^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\anyio\_backends\_asyncio.py", line 914, in run
+    result = context.run(func, *args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\CollabAI\CollabAI\backend\app\core\deps.py", line 30, in get_current_user
+    user = db.query(User).filter(User.id == user_id).first()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py", line 2766, in first
+    return self.limit(1)._iter().first()  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\query.py", line 2864, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py", line 2373, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py", line 2261, in _execute_internal
+    conn = self._connection_for_bind(bind)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py", line 2113, in _connection_for_bind
+    return trans._connection_for_bind(engine, execution_options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<string>", line 2, in _connection_for_bind
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+                ^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\session.py", line 1191, in _connection_for_bind
+    conn = bind.connect()
+           ^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py", line 3295, in connect
+    return self._connection_cls(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py", line 146, in __init__
+    Connection._handle_dbapi_exception_noconnection(
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py", line 2450, in _handle_dbapi_exception_noconnection
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py", line 144, in __init__
+    self._dbapi_connection = engine.raw_connection()
+                             ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\base.py", line 3319, in raw_connection
+    return self.pool.connect()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 448, in connect
+    return _ConnectionFairy._checkout(self)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 1353, in _checkout
+    with util.safe_reraise():
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 1350, in _checkout
+    fairy._connection_record.get_connection()
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 837, in get_connection
+    self.__connect()
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 900, in __connect
+    with util.safe_reraise():
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 122, in __exit__
+    raise exc_value.with_traceback(exc_tb)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\pool\base.py", line 896, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\create.py", line 667, in connect
+    return dialect.connect(*cargs_tup, **cparams)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\engine\default.py", line 630, in connect
+    return self.loaded_dbapi.connect(*cargs, **cparams)  # type: ignore[no-any-return]  # NOQA: E501
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\psycopg2\__init__.py", line 135, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) connection to server at "localhost" (::1), port 5433 failed: FATAL:  the database system is in recovery mode
+
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+INFO:     127.0.0.1:22426 - "GET /health HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     ('127.0.0.1', 63179) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczODQ4NzUsInR5cGUiOiJhY2Nlc3MifQ.YimY_148Hf-zyxO0KIFm-GbvH6y4ukwWYbQa_HnGBw0" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:22954 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31180 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:22889 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55549 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39259 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 16651) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczODQ4NzUsInR5cGUiOiJhY2Nlc3MifQ.YimY_148Hf-zyxO0KIFm-GbvH6y4ukwWYbQa_HnGBw0" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:39259 - "GET /notifications HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:55549 - "GET /notifications/unread-count HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:22889 - "GET /workspaces HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:31180 - "GET /notifications HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:39259 - "GET /notifications/unread-count HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:39259 - "OPTIONS /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39259 - "POST /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39259 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:23373 - "GET /health HTTP/1.1" 200 OK
+INFO:     127.0.0.1:23379 - "POST /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3822 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25176 - "POST /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:38981 - "POST /workspaces/a1d08e90-6941-4b15-927d-bb2bcf184c2c/invites HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11989 - "POST /auth/register HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11991 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11993 - "POST /workspaces/a1d08e90-6941-4b15-927d-bb2bcf184c2c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11995 - "GET /workspaces/a1d08e90-6941-4b15-927d-bb2bcf184c2c/members HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 12003) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJmMWQ4NDAwOS05OTAxLTRhODYtOTA5Yy05MDRjMmRkMTg2ZTEiLCJleHAiOjE3ODczODU4NzMsInR5cGUiOiJhY2Nlc3MifQ.E4zCkZIy16JIibPFK1IbmbWTo0PKWHptnF1dB_lXjEA" [accepted]
+INFO:     connection open
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\uvicorn\protocols\websockets\websockets_impl.py", line 243, in run_asgi
+    result = await self.app(self.scope, self.asgi_receive, self.asgi_send)  # type: ignore[func-returns-value]
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\errors.py", line 152, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\base.py", line 100, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 362, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 95, in app
+    await wrap_app_handling_exceptions(app, session)(scope, receive, send)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\starlette\routing.py", line 93, in app
+    await func(session)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\fastapi\routing.py", line 383, in app
+    await dependant.call(**solved_result.values)
+  File "C:\CollabAI\CollabAI\backend\app\routers\chat_ws.py", line 151, in dm_websocket
+  File "C:\CollabAI\CollabAI\backend\app\routers\chat_ws.py", line 44, in _relay
+    pubsub = redis_conn.pubsub()
+                      ^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\attributes.py", line 569, in __get__
+    return self.impl.get(state, dict_)  # type: ignore[no-any-return]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\attributes.py", line 1096, in get
+    value = self._fire_loader_callables(state, key, passive)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\attributes.py", line 1126, in _fire_loader_callables
+    return state._load_expired(state, passive)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\state.py", line 828, in _load_expired
+    self.manager.expired_attribute_loader(self, toload, passive)
+  File "C:\Users\MANISH YADAV\AppData\Local\Programs\Python\Python311\Lib\site-packages\sqlalchemy\orm\loading.py", line 1607, in load_scalar_attributes
+    raise orm_exc.DetachedInstanceError(
+sqlalchemy.orm.exc.DetachedInstanceError: Instance <Conversation at 0x1aa230c7650> is not bound to a Session; attribute refresh operation cannot proceed (Background on this error at: https://sqlalche.me/e/20/bhk3)
+INFO:     connection open
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:61600 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3169 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58338 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 13837) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczODU4NDEsInR5cGUiOiJhY2Nlc3MifQ.mhPpOwsMk_xRoZ1nHvmqkdH0fmM31Go2i8huXjxM0tA" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:3169 - "GET /workspaces HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:61600 - "GET /notifications HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:58338 - "GET /notifications/unread-count HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:58338 - "OPTIONS /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58338 - "POST /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58338 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 63122) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczODcwMTksInR5cGUiOiJhY2Nlc3MifQ.rOVrZROj2tQeiplMD0zRp-WZnLB5eUCahtrcnkcQnr4" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61479 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9219 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61479 - "GET /notifications/unread-count HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:9219 - "GET /notifications HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:9219 - "OPTIONS /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9219 - "POST /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:9219 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:36312 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36312 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36312 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36312 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36312 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18877 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/online-members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25255 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58140 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52022 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:49926 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/online-members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36312 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18877 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36312 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/online-members HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:36312 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/online-members HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49926 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 55752) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczODk3MzksInR5cGUiOiJhY2Nlc3MifQ.2lyb2IOKjJ-OYSCCqFt5CI79YQ4pf4UVowA-be6Zshs" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:36312 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58140 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 22751) - "WebSocket /ws/dm/13cdd4dd-3be3-4183-9f4b-1643262cbafb/ef6d07f4-35da-424f-9db4-ab2cdff02574?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczODk3MzksInR5cGUiOiJhY2Nlc3MifQ.2lyb2IOKjJ-OYSCCqFt5CI79YQ4pf4UVowA-be6Zshs" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:25255 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52022 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25255 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18877 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25255 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25255 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:25255 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52022 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18877 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52022 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK

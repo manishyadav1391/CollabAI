@@ -2,28 +2,55 @@
 
 import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
+import axios from "axios";
+import { apiClient } from "@/lib/api-client";
 import { useWorkspaceProjects } from "@/lib/hooks/useWorkspaceProjects";
 import { getCurrentUserId } from "@/lib/auth";
 import { Button } from "@/components/ui/Button";
 import { Toast } from "@/components/ui/Toast";
-import { SearchIcon, PlusIcon } from "@/components/dashboard/icons";
+import { Modal } from "@/components/ui/Modal";
+import { Banner } from "@/components/ui/Banner";
+import { SearchIcon, PlusIcon, TrashIcon } from "@/components/dashboard/icons";
 import { NewProjectModal } from "@/components/dashboard/NewProjectModal";
 import { ProjectGridCard } from "@/components/projects/ProjectGridCard";
 import { ProjectListRow } from "@/components/projects/ProjectListRow";
 import { ProjectsEmptyState } from "@/components/projects/ProjectsEmptyState";
 import { ProjectsSkeleton } from "@/components/projects/ProjectsSkeleton";
+import { TrashModal } from "@/components/projects/TrashModal";
 import { ViewToggle, type ViewMode } from "@/components/projects/ViewToggle";
+import type { ProjectSummary } from "@/components/dashboard/ProjectsGrid";
 
 const LIST_HEADER_COLS = ["Name", "Access level", "Members", "Documents", "Last active", ""];
 
 export default function ProjectsPage() {
   const { workspaceId } = useParams<{ workspaceId: string }>();
-  const { members, projects, loading, addProject } = useWorkspaceProjects(workspaceId);
+  const { members, projects, loading, addProject, removeProject } = useWorkspaceProjects(workspaceId);
 
   const [query, setQuery] = useState("");
   const [view, setView] = useState<ViewMode>("grid");
   const [modalOpen, setModalOpen] = useState(false);
+  const [trashOpen, setTrashOpen] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<ProjectSummary | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [deleting, setDeleting] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+
+  async function handleDelete() {
+    if (!deleteTarget) return;
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      await apiClient.delete(`/projects/${deleteTarget.id}`);
+      removeProject(deleteTarget.id);
+      setToast(`"${deleteTarget.name}" moved to trash.`);
+      setDeleteTarget(null);
+    } catch (err) {
+      const detail = axios.isAxiosError(err) ? err.response?.data?.detail : undefined;
+      setDeleteError(detail ?? "Failed to delete project");
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   const currentUserId = getCurrentUserId();
   const isAdmin = useMemo(() => {
@@ -47,19 +74,27 @@ export default function ProjectsPage() {
           </span>
         </div>
 
-        {isAdmin ? (
-          <Button onClick={() => setModalOpen(true)}>
-            <PlusIcon size={15} />
-            New project
-          </Button>
-        ) : (
-          <span title="Only workspace admins can create projects">
-            <Button disabled>
+        <div className="flex items-center gap-3">
+          {isAdmin && (
+            <Button variant="secondary" onClick={() => setTrashOpen(true)}>
+              <TrashIcon size={15} />
+              Trash
+            </Button>
+          )}
+          {isAdmin ? (
+            <Button onClick={() => setModalOpen(true)}>
               <PlusIcon size={15} />
               New project
             </Button>
-          </span>
-        )}
+          ) : (
+            <span title="Only workspace admins can create projects">
+              <Button disabled>
+                <PlusIcon size={15} />
+                New project
+              </Button>
+            </span>
+          )}
+        </div>
       </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -95,6 +130,7 @@ export default function ProjectsPage() {
               workspaceId={workspaceId}
               isAdmin={isAdmin}
               index={index}
+              onDeleteRequested={() => setDeleteTarget(project)}
             />
           ))}
         </div>
@@ -113,6 +149,7 @@ export default function ProjectsPage() {
               workspaceId={workspaceId}
               isAdmin={isAdmin}
               index={index}
+              onDeleteRequested={() => setDeleteTarget(project)}
             />
           ))}
         </div>
@@ -127,6 +164,44 @@ export default function ProjectsPage() {
           setToast("Project created!");
         }}
       />
+
+      <TrashModal
+        workspaceId={workspaceId}
+        open={trashOpen}
+        onClose={() => setTrashOpen(false)}
+        onRestored={(project) => {
+          addProject(project);
+          setToast(`"${project.name}" restored.`);
+        }}
+      />
+
+      <Modal
+        open={!!deleteTarget}
+        onClose={() => {
+          setDeleteTarget(null);
+          setDeleteError(null);
+        }}
+        title="Delete project"
+      >
+        <p className="text-[14px] leading-[1.6] text-[var(--muted)]">
+          Move <strong className="text-[var(--text)]">{deleteTarget?.name}</strong> to the trash? It can be
+          restored within 30 days from the Trash panel, after which it&apos;s gone for good.
+        </p>
+        {deleteError && (
+          <div className="mt-4">
+            <Banner>{deleteError}</Banner>
+          </div>
+        )}
+        <div className="mt-6 flex justify-end gap-3">
+          <Button variant="secondary" onClick={() => setDeleteTarget(null)}>
+            Cancel
+          </Button>
+          <Button variant="danger" disabled={deleting} onClick={handleDelete}>
+            {deleting ? "Deleting…" : "Delete project"}
+          </Button>
+        </div>
+      </Modal>
+
       <Toast message={toast} onDone={() => setToast(null)} />
     </div>
   );

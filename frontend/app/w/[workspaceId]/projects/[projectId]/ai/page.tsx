@@ -60,15 +60,18 @@ function AICopilotPageInner() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const conversationId = searchParams.get("c");
+  const scope = searchParams.get("scope") === "workspace" ? "workspace" : "project";
   const { workspaceName, project } = useProjectContext(workspaceId, projectId);
   const [conversations, setConversations] = useState<AIConversationSummary[]>([]);
   const [exchanges, setExchanges] = useState<Exchange[]>([]);
   const [asking, setAsking] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  const scopeParams = scope === "workspace" ? { workspace_id: workspaceId } : { project_id: projectId };
+
   function loadConversations() {
     apiClient
-      .get<AIConversationSummary[]>(`/ai/conversations/${projectId}`)
+      .get<AIConversationSummary[]>("/ai/conversations", { params: scopeParams })
       .then(({ data }) => setConversations(data))
       .catch(() => {});
   }
@@ -76,7 +79,7 @@ function AICopilotPageInner() {
   useEffect(() => {
     loadConversations();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projectId]);
+  }, [projectId, scope]);
 
   useEffect(() => {
     // Skip: this conversation_id was just assigned by our own in-flight ask
@@ -88,14 +91,14 @@ function AICopilotPageInner() {
 
     const load = conversationId
       ? apiClient
-          .get<AIMessageHistoryItem[]>(`/ai/conversations/${projectId}/${conversationId}`)
+          .get<AIMessageHistoryItem[]>(`/ai/conversations/${conversationId}/messages`, { params: scopeParams })
           .then(({ data }) => exchangesFromHistory(data))
           .catch(() => [] as Exchange[])
       : Promise.resolve([] as Exchange[]);
 
     load.then(setExchanges);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projectId, conversationId]);
+  }, [projectId, conversationId, scope]);
 
   useEffect(() => {
     const el = scrollRef.current;
@@ -107,11 +110,17 @@ function AICopilotPageInner() {
   }
 
   function selectConversation(id: string) {
-    router.replace(`/w/${workspaceId}/projects/${projectId}/ai?c=${id}`);
+    const scopeQuery = scope === "workspace" ? "&scope=workspace" : "";
+    router.replace(`/w/${workspaceId}/projects/${projectId}/ai?c=${id}${scopeQuery}`);
   }
 
   function newChat() {
-    router.replace(`/w/${workspaceId}/projects/${projectId}/ai`);
+    const scopeQuery = scope === "workspace" ? "?scope=workspace" : "";
+    router.replace(`/w/${workspaceId}/projects/${projectId}/ai${scopeQuery}`);
+  }
+
+  function setScope(next: "project" | "workspace") {
+    router.replace(`/w/${workspaceId}/projects/${projectId}/ai${next === "workspace" ? "?scope=workspace" : ""}`);
   }
 
   async function handleAsk(question: string) {
@@ -127,7 +136,7 @@ function AICopilotPageInner() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${getAccessToken()}`,
         },
-        body: JSON.stringify({ project_id: projectId, question, conversation_id: conversationId }),
+        body: JSON.stringify({ ...scopeParams, question, conversation_id: conversationId }),
       });
 
       const reader = response.body?.getReader();
@@ -149,7 +158,7 @@ function AICopilotPageInner() {
           if (!line.startsWith("data: ")) continue;
           const event = JSON.parse(line.slice(6));
           if (event.type === "conversation" && isNewConversation) {
-            router.replace(`/w/${workspaceId}/projects/${projectId}/ai?c=${event.conversation_id}`);
+            selectConversation(event.conversation_id);
           } else if (event.type === "token") {
             answer += event.text;
             patchLast(id, { answer });
@@ -183,16 +192,28 @@ function AICopilotPageInner() {
         />
 
         <div className="mx-auto flex min-h-0 w-full max-w-[880px] flex-1 flex-col px-6 py-6">
-          <div className="mb-4 flex shrink-0 items-center gap-[10px]">
-            <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-[image:var(--grad)] shadow-[var(--sh-accent)]">
-              <SparkleIcon size={16} stroke="#fff" strokeWidth={2.2} />
-            </span>
-            <div>
-              <h1 className="text-[16px] font-extrabold tracking-[-.01em] text-[var(--text)]">Ask CollabAI</h1>
-              <p className="text-[12.5px] text-[var(--muted)]">
-                Grounded in this project&apos;s documents, every claim cited.
-              </p>
+          <div className="mb-4 flex shrink-0 items-center justify-between gap-[10px]">
+            <div className="flex items-center gap-[10px]">
+              <span className="flex h-8 w-8 items-center justify-center rounded-[10px] bg-[image:var(--grad)] shadow-[var(--sh-accent)]">
+                <SparkleIcon size={16} stroke="#fff" strokeWidth={2.2} />
+              </span>
+              <div>
+                <h1 className="text-[16px] font-extrabold tracking-[-.01em] text-[var(--text)]">Ask CollabAI</h1>
+                <p className="text-[12.5px] text-[var(--muted)]">
+                  {scope === "workspace"
+                    ? "Grounded in every project you can see in this workspace."
+                    : "Grounded in this project's documents, every claim cited."}
+                </p>
+              </div>
             </div>
+            <select
+              value={scope}
+              onChange={(e) => setScope(e.target.value as "project" | "workspace")}
+              className="rounded-[var(--r)] border border-[var(--border)] bg-[var(--panel-2)] px-3 py-[7px] font-sans text-[12.5px] font-semibold text-[var(--text)] outline-none focus:border-[var(--accent)]"
+            >
+              <option value="project">This project</option>
+              <option value="workspace">Entire workspace</option>
+            </select>
           </div>
 
           <div ref={scrollRef} className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto py-2">

@@ -16,3 +16,8 @@ def create(db: Session, email: str, password_hash: str, name: str) -> User:
     db.commit()
     db.refresh(user)
     return user
+
+
+def update_password(db: Session, user: User, password_hash: str) -> None:
+    user.password_hash = password_hash
+    db.commit()

@@ -43,6 +43,12 @@ def ensure_bucket_exists() -> None:
                         "AllowedOrigins": [settings.frontend_base_url],
                         "AllowedMethods": ["GET", "PUT", "POST"],
                         "AllowedHeaders": ["*"],
+                        # The browser needs to read the ETag response header
+                        # off each part PUT to hand back to us for
+                        # CompleteMultipartUpload (FR-DOC-05) — browsers
+                        # hide response headers from cross-origin JS unless
+                        # the server explicitly exposes them via CORS.
+                        "ExposeHeaders": ["ETag"],
                     }
                 ]
             },
@@ -76,3 +82,45 @@ def generate_download_url(object_key: str, expires_in: int = 900) -> str:
 def download_file(object_key: str) -> bytes:
     obj = _s3.get_object(Bucket=settings.minio_bucket, Key=object_key)
     return obj["Body"].read()
+
+
+# --- Multipart (chunked/resumable) upload — FR-DOC-05 ---
+# Large files are split into parts on the client; each part is PUT directly
+# to MinIO via its own presigned URL, same "never through the API server's
+# memory" principle as the single-shot upload above.
+
+def create_multipart_upload(object_key: str) -> str:
+    resp = _s3.create_multipart_upload(Bucket=settings.minio_bucket, Key=object_key)
+    return resp["UploadId"]
+
+
+def generate_part_upload_url(object_key: str, upload_id: str, part_number: int, expires_in: int = 900) -> str:
+    return _s3.generate_presigned_url(
+        "upload_part",
+        Params={
+            "Bucket": settings.minio_bucket, "Key": object_key,
+            "UploadId": upload_id, "PartNumber": part_number,
+        },
+        ExpiresIn=expires_in,
+    )
+
+
+def list_uploaded_parts(object_key: str, upload_id: str) -> list[dict]:
+    """What MinIO already has for this upload — lets a client resume after
+    a reload/crash without re-uploading parts that already landed."""
+    parts = []
+    paginator = _s3.get_paginator("list_parts")
+    for page in paginator.paginate(Bucket=settings.minio_bucket, Key=object_key, UploadId=upload_id):
+        parts.extend(page.get("Parts", []))
+    return [{"part_number": p["PartNumber"], "etag": p["ETag"], "size_bytes": p["Size"]} for p in parts]
+
+
+def complete_multipart_upload(object_key: str, upload_id: str, parts: list[dict]) -> None:
+    _s3.complete_multipart_upload(
+        Bucket=settings.minio_bucket, Key=object_key, UploadId=upload_id,
+        MultipartUpload={"Parts": [{"PartNumber": p["part_number"], "ETag": p["etag"]} for p in parts]},
+    )
+
+
+def abort_multipart_upload(object_key: str, upload_id: str) -> None:
+    _s3.abort_multipart_upload(Bucket=settings.minio_bucket, Key=object_key, UploadId=upload_id)

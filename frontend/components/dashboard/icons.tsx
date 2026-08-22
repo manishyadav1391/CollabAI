@@ -159,3 +159,37 @@ export function ChevronDownIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function BellIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" />
+      <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+    </svg>
+  );
+}
+
+export function CheckIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M20 6 9 17l-5-5" />
+    </svg>
+  );
+}
+
+export function CheckCheckIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="m3 12 4.5 4.5L18 6" />
+      <path d="m8 12 4.5 4.5L23 6" />
+    </svg>
+  );
+}
+
+export function TrashIcon(props: IconProps) {
+  return (
+    <svg {...base(props)}>
+      <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13" />
+    </svg>
+  );
+}

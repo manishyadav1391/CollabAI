@@ -113,7 +113,11 @@ export function FileRow({
       <span className="truncate text-[12.5px] text-[var(--muted)]">
         {uploaderLabel} · {version ? formatRelativeTime(version.uploaded_at) : ""}
       </span>
-      <span>{!isReady && version && <StatusBadge status={version.status} reason={version.failure_reason} />}</span>
+      <span>
+        {!isReady && version && (
+          <StatusBadge status={version.status} reason={version.failure_reason} uploadProgress={version.upload_progress} />
+        )}
+      </span>
       <RowMenu documentId={doc.id} onDelete={onDelete} />
     </div>
   );

@@ -18,10 +18,11 @@ from sqlalchemy.orm import Session
 
 from app.config import get_settings
 from app.core.embeddings import embed_text
-from app.core.permission_filter import permission_filtered_project_ids
+from app.core.permission_filter import permission_filtered_project_ids, can_access_document
 from app.models.document_chunk import DocumentChunk
 from app.models.document_version import DocumentVersion
 from app.models.document import Document
+from app.models.project import Project
 from app.models.ai_message import AIMessage
 from app.repositories import ai_message_repo
 
@@ -48,44 +49,74 @@ say plainly that you don't have relevant information in the documents you \
 have access to. Do not guess or use outside knowledge."""
 
 
-def _retrieve_chunks(db: Session, user_id, project_id: str, question: str) -> list[dict]:
-    allowed_project_ids = [str(p) for p in permission_filtered_project_ids(db, user_id)]
-    if project_id not in allowed_project_ids:
-        return []  # not permitted to this project at all — no retrieval happens
+def _scope_ids(db: Session, user_id, project_id: str | None, workspace_id: str | None) -> list[str]:
+    """Resolves the set of project ids this question is allowed to draw
+    from: exactly the requested project (if permitted), or every permitted
+    project inside the requested workspace for a workspace-wide ask."""
+    allowed_project_ids = permission_filtered_project_ids(db, user_id)
+
+    if project_id:
+        return [project_id] if project_id in [str(p) for p in allowed_project_ids] else []
+
+    if workspace_id and allowed_project_ids:
+        workspace_project_ids = {
+            str(row.id)
+            for row in db.query(Project)
+            .filter(Project.id.in_(allowed_project_ids), Project.workspace_id == workspace_id)
+            .all()
+        }
+        return list(workspace_project_ids)
+
+    return []
+
+
+def _retrieve_chunks(db: Session, user_id, project_id: str | None, workspace_id: str | None, question: str) -> list[dict]:
+    scope_ids = _scope_ids(db, user_id, project_id, workspace_id)
+    if not scope_ids:
+        return []  # not permitted to any project in scope — no retrieval happens
 
     query_vector = embed_text(question)
 
-    rows = (
+    # Over-fetch, then drop any chunk whose document is individually
+    # restricted and not permitted for this user — that check can't be
+    # pushed into the SQL/ORM query without duplicating can_access_document.
+    candidate_rows = (
         db.query(DocumentChunk, DocumentVersion, Document)
         .join(DocumentVersion, DocumentVersion.id == DocumentChunk.document_version_id)
         .join(Document, Document.id == DocumentVersion.document_id)
-        .filter(DocumentChunk.project_id == project_id)
+        .filter(DocumentChunk.project_id.in_(scope_ids))
         .order_by(DocumentChunk.embedding.cosine_distance(query_vector))
-        .limit(TOP_K)
+        .limit(TOP_K * 4)
         .all()
     )
 
-    return [
-        {
+    results = []
+    for chunk, version, document in candidate_rows:
+        if not can_access_document(db, user_id, document):
+            continue
+        results.append({
             "document_id": str(document.id),
+            "project_id": str(document.project_id),
             "filename": version.filename,
             "chunk_text": chunk.chunk_text,
             "page_or_section": chunk.page_or_section,
-        }
-        for chunk, version, document in rows
-    ]
+        })
+        if len(results) >= TOP_K:
+            break
+
+    return results
 
 
-def start_conversation(db: Session, user_id, project_id: str):
-    return ai_message_repo.create_conversation(db, user_id, project_id)
+def start_conversation(db: Session, user_id, project_id: str | None, workspace_id: str | None = None):
+    return ai_message_repo.create_conversation(db, user_id, project_id, workspace_id)
 
 
-def get_conversation(db: Session, user_id, project_id: str, conversation_id: str):
-    return ai_message_repo.get_conversation(db, user_id, project_id, conversation_id)
+def get_conversation(db: Session, user_id, project_id: str | None, workspace_id: str | None, conversation_id: str):
+    return ai_message_repo.get_conversation(db, user_id, project_id, workspace_id, conversation_id)
 
 
-def list_conversations(db: Session, user_id, project_id: str) -> list[dict]:
-    return ai_message_repo.list_conversations(db, user_id, project_id)
+def list_conversations(db: Session, user_id, project_id: str | None, workspace_id: str | None = None) -> list[dict]:
+    return ai_message_repo.list_conversations(db, user_id, project_id, workspace_id)
 
 
 def _build_prompt(question: str, chunks: list[dict]) -> str:
@@ -106,7 +137,7 @@ def _build_prompt(question: str, chunks: list[dict]) -> str:
     )
 
 
-def ask_stream(db: Session, user_id, project_id: str, question: str, conversation_id):
+def ask_stream(db: Session, user_id, project_id: str | None, workspace_id: str | None, question: str, conversation_id):
     """
     Generator yielding SSE-formatted strings: one 'conversation' event up
     front (so the caller learns the id immediately for a brand-new chat),
@@ -114,7 +145,7 @@ def ask_stream(db: Session, user_id, project_id: str, question: str, conversatio
     """
     yield f"data: {json.dumps({'type': 'conversation', 'conversation_id': str(conversation_id)})}\n\n"
 
-    chunks = _retrieve_chunks(db, user_id, project_id, question)
+    chunks = _retrieve_chunks(db, user_id, project_id, workspace_id, question)
 
     if not chunks:
         message = "I don't have relevant information in the documents you have access to."
@@ -149,6 +180,7 @@ def ask_stream(db: Session, user_id, project_id: str, question: str, conversatio
     citations = [
         {
             "document_id": c["document_id"],
+            "project_id": c["project_id"],
             "filename": c["filename"],
             "page_or_section": c["page_or_section"],
             "chunk_text": c["chunk_text"],

@@ -63,11 +63,12 @@ async def health() -> dict:
     return {"status": "ok", "service": "collabai-api", "version": "0.1.0"}
 
 
-from app.routers import auth, workspaces, projects, documents, search, ai, notifications, chat_ws, comments
+from app.routers import auth, workspaces, projects, documents, folders, search, ai, notifications, chat_ws, comments
 app.include_router(auth.router, prefix="/auth", tags=["auth"])
 app.include_router(workspaces.router, prefix="/workspaces", tags=["workspaces"])
 app.include_router(projects.router, tags=["projects"])
 app.include_router(documents.router, prefix="/documents", tags=["documents"])
+app.include_router(folders.router, prefix="/folders", tags=["folders"])
 app.include_router(search.router, prefix="/search", tags=["search"])
 app.include_router(ai.router, prefix="/ai", tags=["ai"])
 app.include_router(notifications.router, prefix="/notifications", tags=["notifications"])

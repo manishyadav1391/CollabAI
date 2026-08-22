@@ -5,9 +5,11 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { apiClient } from "@/lib/api-client";
 import { getAccessToken, getCurrentUserId } from "@/lib/auth";
 import { useProjectContext } from "@/lib/hooks/useProjectContext";
+import { usePresence } from "@/lib/hooks/usePresence";
 import type { ChatMessage, DMThread } from "@/lib/types";
 import { avatarGradient, formatRelativeTime, initials } from "@/lib/format";
 import { TOPBAR_HEIGHT } from "@/components/dashboard/Topbar";
+import { CheckIcon, CheckCheckIcon } from "@/components/dashboard/icons";
 import { ProjectPageHeader } from "@/components/projects/ProjectPageHeader";
 import { Button } from "@/components/ui/Button";
 import { ConversationSidebar, type ActiveTarget } from "@/components/chat/ConversationSidebar";
@@ -27,6 +29,7 @@ function ChatPageInner() {
   const dmUserId = searchParams.get("dm");
   const { workspaceName, project, members, memberName } = useProjectContext(workspaceId, projectId);
   const currentUserId = getCurrentUserId();
+  const onlineUserIds = usePresence(workspaceId);
 
   const activeTarget: ActiveTarget = dmUserId ? { kind: "dm", userId: dmUserId } : { kind: "room" };
   const activeKey = activeTarget.kind === "dm" ? `dm:${activeTarget.userId}` : "room";
@@ -35,8 +38,37 @@ function ChatPageInner() {
   const [dmThreads, setDmThreads] = useState<DMThread[]>([]);
   const [input, setInput] = useState("");
   const [connected, setConnected] = useState(false);
+  const [hasMore, setHasMore] = useState(false);
+  const [loadingOlder, setLoadingOlder] = useState(false);
   const wsRef = useRef<WebSocket | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  function historyPath() {
+    return activeTarget.kind === "dm"
+      ? `/ws/chat/${projectId}/dm/${activeTarget.userId}/history`
+      : `/ws/chat/${projectId}/history`;
+  }
+
+  function loadOlderMessages() {
+    if (!hasMore || loadingOlder || messages.length === 0) return;
+    setLoadingOlder(true);
+    const before = messages[0].sequence_number;
+    const el = scrollRef.current;
+    const prevHeight = el?.scrollHeight ?? 0;
+    const prevTop = el?.scrollTop ?? 0;
+
+    apiClient
+      .get<{ messages: ChatMessage[]; has_more: boolean }>(historyPath(), { params: { before } })
+      .then(({ data }) => {
+        setMessages((prev) => [...data.messages, ...prev]);
+        setHasMore(data.has_more);
+        requestAnimationFrame(() => {
+          if (el) el.scrollTop = el.scrollHeight - prevHeight + prevTop;
+        });
+      })
+      .catch(() => {})
+      .finally(() => setLoadingOlder(false));
+  }
 
   function selectTarget(target: ActiveTarget) {
     const query = target.kind === "dm" ? `?dm=${target.userId}` : "";
@@ -56,17 +88,29 @@ function ChatPageInner() {
   }, [projectId]);
 
   useEffect(() => {
-    const historyPath =
+    const readPath =
       activeTarget.kind === "dm"
-        ? `/ws/chat/${projectId}/dm/${activeTarget.userId}/history`
-        : `/ws/chat/${projectId}/history`;
+        ? `/ws/chat/${projectId}/dm/${activeTarget.userId}/read`
+        : `/ws/chat/${projectId}/read`;
 
     apiClient
-      .get<{ messages: ChatMessage[] }>(historyPath)
-      .then(({ data }) => setMessages(data.messages))
-      .catch(() => setMessages([]));
-
-    if (activeTarget.kind === "dm") loadDmThreads();
+      .get<{ messages: ChatMessage[]; has_more: boolean }>(historyPath())
+      .then(({ data }) => {
+        setMessages(data.messages);
+        setHasMore(data.has_more);
+        requestAnimationFrame(() => {
+          const el = scrollRef.current;
+          if (el) el.scrollTop = el.scrollHeight;
+        });
+      })
+      .catch(() => {
+        setMessages([]);
+        setHasMore(false);
+      })
+      .then(() => {
+        apiClient.put(readPath).catch(() => {});
+        if (activeTarget.kind === "dm") loadDmThreads();
+      });
 
     const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
     const wsBase = apiBase.replace(/^http/, "ws");
@@ -78,20 +122,29 @@ function ChatPageInner() {
     ws.onopen = () => setConnected(true);
     ws.onclose = () => setConnected(false);
     ws.onmessage = (event) => {
-      const message: ChatMessage = JSON.parse(event.data);
+      const data = JSON.parse(event.data);
+      if (data.type === "read_receipt") {
+        setMessages((prev) =>
+          prev.map((m) => (m.sequence_number <= data.up_to_sequence ? { ...m, read: true } : m))
+        );
+        return;
+      }
+      const message: ChatMessage = data;
       setMessages((prev) => [...prev, message]);
       if (activeTarget.kind === "dm") loadDmThreads();
+      // The chat window is open on this target, so this incoming message
+      // counts as read immediately — matches WhatsApp's "open chat = read".
+      apiClient.put(readPath).catch(() => {});
+      requestAnimationFrame(() => {
+        const el = scrollRef.current;
+        if (el) el.scrollTop = el.scrollHeight;
+      });
     };
 
     wsRef.current = ws;
     return () => ws.close();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId, activeKey]);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
-  }, [messages]);
 
   function sendMessage(e: React.FormEvent) {
     e.preventDefault();
@@ -119,12 +172,24 @@ function ChatPageInner() {
           currentUserId={currentUserId}
           dmThreads={dmThreads}
           activeTarget={activeTarget}
+          onlineUserIds={onlineUserIds}
           onSelect={selectTarget}
         />
 
         <div className="mx-auto flex min-h-0 w-full max-w-[820px] flex-1 flex-col px-6 py-4">
           <div className="mb-3 flex shrink-0 items-center justify-between">
-            <h1 className="text-[16px] font-extrabold tracking-[-.01em] text-[var(--text)]">{headerTitle}</h1>
+            <div className="flex items-center gap-[8px]">
+              <h1 className="text-[16px] font-extrabold tracking-[-.01em] text-[var(--text)]">{headerTitle}</h1>
+              {activeTarget.kind === "dm" && (
+                <span className="flex items-center gap-[5px] text-[12px] text-[var(--faint)]">
+                  <span
+                    className="h-[6px] w-[6px] rounded-full"
+                    style={{ background: onlineUserIds.has(activeTarget.userId) ? "#34d399" : "var(--faint)" }}
+                  />
+                  {onlineUserIds.has(activeTarget.userId) ? "Online" : "Offline"}
+                </span>
+              )}
+            </div>
             <span className="flex items-center gap-[6px] text-[12px]" style={{ color: connected ? "var(--green)" : "var(--faint)" }}>
               <span
                 className="h-[6px] w-[6px] rounded-full"
@@ -145,8 +210,20 @@ function ChatPageInner() {
                   : "No messages yet. Say hello to the team."}
               </p>
             ) : (
-              messages.map((m) => {
+              <>
+                {hasMore && (
+                  <button
+                    type="button"
+                    onClick={loadOlderMessages}
+                    disabled={loadingOlder}
+                    className="mx-auto rounded-[100px] border border-[var(--border)] bg-[var(--panel-2)] px-4 py-[6px] font-mono text-[11px] font-bold text-[var(--muted)] transition-colors hover:text-[var(--text)] disabled:opacity-50"
+                  >
+                    {loadingOlder ? "Loading…" : "Load older messages"}
+                  </button>
+                )}
+                {messages.map((m) => {
                 const name = memberName(m.sender_id, currentUserId);
+                const showTicks = activeTarget.kind === "dm" && m.sender_id === currentUserId;
                 return (
                   <div key={m.id} className="flex items-start gap-3">
                     <span
@@ -162,13 +239,20 @@ function ChatPageInner() {
                           {formatRelativeTime(m.created_at)}
                         </span>
                       </div>
-                      <p className="mt-[2px] text-[13.5px] leading-[1.55] break-words text-[var(--text)]">
-                        {m.content}
-                      </p>
+                      <div className="mt-[2px] flex items-end gap-1">
+                        <p className="text-[13.5px] leading-[1.55] break-words text-[var(--text)]">{m.content}</p>
+                        {showTicks &&
+                          (m.read ? (
+                            <CheckCheckIcon size={13} stroke="var(--green)" strokeWidth={2.4} className="mb-[3px] shrink-0" />
+                          ) : (
+                            <CheckIcon size={13} stroke="var(--faint)" strokeWidth={2.4} className="mb-[3px] shrink-0" />
+                          ))}
+                      </div>
                     </div>
                   </div>
                 );
-              })
+              })}
+              </>
             )}
           </div>
 

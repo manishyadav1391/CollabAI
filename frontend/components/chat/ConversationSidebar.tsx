@@ -14,12 +14,14 @@ export function ConversationSidebar({
   currentUserId,
   dmThreads,
   activeTarget,
+  onlineUserIds,
   onSelect,
 }: {
   members: Member[];
   currentUserId: string | null;
   dmThreads: DMThread[];
   activeTarget: ActiveTarget;
+  onlineUserIds?: Set<string>;
   onSelect: (target: ActiveTarget) => void;
 }) {
   const threadByUserId = new Map(dmThreads.map((t) => [t.other_user_id, t]));
@@ -68,6 +70,7 @@ export function ConversationSidebar({
           ) : (
             others.map(({ member, thread }) => {
               const active = targetsEqual(activeTarget, { kind: "dm", userId: member.user_id });
+              const online = onlineUserIds?.has(member.user_id) ?? false;
               return (
                 <button
                   key={member.user_id}
@@ -75,23 +78,43 @@ export function ConversationSidebar({
                   className={rowClass(active)}
                   onClick={() => onSelect({ kind: "dm", userId: member.user_id })}
                 >
-                  <span
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-[11px] font-bold text-white"
-                    style={{ background: avatarGradient(member.user_id) }}
-                  >
-                    {initials(member.name)}
+                  <span className="relative flex h-9 w-9 shrink-0 items-center justify-center">
+                    <span
+                      className="flex h-9 w-9 items-center justify-center rounded-full text-[11px] font-bold text-white"
+                      style={{ background: avatarGradient(member.user_id) }}
+                    >
+                      {initials(member.name)}
+                    </span>
+                    <span
+                      title={online ? "Online" : "Offline"}
+                      className="absolute -right-[1px] -bottom-[1px] h-[10px] w-[10px] rounded-full border-2 border-white"
+                      style={{ background: online ? "#34d399" : "var(--faint)" }}
+                    />
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="truncate text-[13.5px] font-bold text-[var(--text)]">{member.name}</span>
+                      <span
+                        className={`truncate text-[13.5px] text-[var(--text)] ${
+                          thread?.unread_count ? "font-extrabold" : "font-bold"
+                        }`}
+                      >
+                        {member.name}
+                      </span>
                       {thread?.last_message_at && (
                         <span className="shrink-0 font-mono text-[10px] text-[var(--faint)]">
                           {formatRelativeTime(thread.last_message_at)}
                         </span>
                       )}
                     </div>
-                    <div className="truncate text-[12px] text-[var(--faint)]">
-                      {thread?.last_message ?? "Start a conversation"}
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="truncate text-[12px] text-[var(--faint)]">
+                        {thread?.last_message ?? "Start a conversation"}
+                      </span>
+                      {!!thread?.unread_count && (
+                        <span className="flex h-[18px] min-w-[18px] shrink-0 items-center justify-center rounded-full bg-[var(--green)] px-[5px] text-[10px] font-bold leading-none text-white">
+                          {thread.unread_count > 9 ? "9+" : thread.unread_count}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </button>

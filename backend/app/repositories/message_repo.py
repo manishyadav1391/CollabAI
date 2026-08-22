@@ -4,6 +4,8 @@ from sqlalchemy import func
 from app.models.conversation import Conversation
 from app.models.conversation_participant import ConversationParticipant
 from app.models.message import Message
+from app.models.project import Project
+from app.models.workspace_member import WorkspaceMember
 
 
 def get_or_create_conversation(db: Session, project_id: str) -> Conversation:
@@ -106,11 +108,37 @@ def create_message(db: Session, conversation_id, sender_id, content: str) -> Mes
     return message
 
 
-def list_messages(db: Session, conversation_id, limit: int = 50) -> list[Message]:
-    return (
-        db.query(Message)
-        .filter(Message.conversation_id == conversation_id)
-        .order_by(Message.sequence_number.desc())
-        .limit(limit)
+def list_messages(db: Session, conversation_id, limit: int = 50, before_sequence: int | None = None) -> list[Message]:
+    query = db.query(Message).filter(Message.conversation_id == conversation_id)
+    if before_sequence is not None:
+        query = query.filter(Message.sequence_number < before_sequence)
+    return query.order_by(Message.sequence_number.desc()).limit(limit).all()
+
+
+def count_unread(db: Session, conversation_id, after_sequence: int, exclude_sender_id=None) -> int:
+    """Messages after this user's read cursor, excluding their own sent
+    messages (sending a message doesn't leave it "unread" for yourself)."""
+    query = db.query(func.count(Message.id)).filter(
+        Message.conversation_id == conversation_id, Message.sequence_number > after_sequence
+    )
+    if exclude_sender_id is not None:
+        query = query.filter(Message.sender_id != exclude_sender_id)
+    return query.scalar() or 0
+
+
+def list_room_recipients(db: Session, conversation_id, sender_id) -> list:
+    """Every workspace member of the project this room conversation belongs
+    to, except the sender — mirrors the membership check `_is_project_member`
+    in chat_ws.py uses to grant room access in the first place."""
+    conversation = db.query(Conversation).filter(Conversation.id == conversation_id).first()
+    if not conversation:
+        return []
+    project = db.query(Project).filter(Project.id == conversation.project_id).first()
+    if not project:
+        return []
+    members = (
+        db.query(WorkspaceMember.user_id)
+        .filter(WorkspaceMember.workspace_id == project.workspace_id, WorkspaceMember.user_id != sender_id)
         .all()
     )
+    return [m.user_id for m in members]

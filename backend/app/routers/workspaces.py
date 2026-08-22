@@ -7,7 +7,7 @@ from app.core.exceptions import NotFoundError, PermissionDeniedError, Validation
 from app.models.user import User
 from app.schemas.workspace import (
     WorkspaceCreateRequest, WorkspaceResponse, InviteRequest, RoleChangeRequest, MemberResponse,
-    InvitePreviewResponse, AcceptInviteResponse,
+    InvitePreviewResponse, AcceptInviteResponse, TransferOwnershipRequest,
 )
 from app.services import workspace_service
 
@@ -73,9 +73,21 @@ def accept_invite(
 def list_members(
     workspace_id: str,
     current_user: User = Depends(get_current_user),
+    _: None = Depends(require_role("member")),
     db: Session = Depends(get_db),
 ):
     return workspace_service.list_members(db, workspace_id)
+
+
+@router.get("/{workspace_id}/online-members")
+async def list_online_members(
+    workspace_id: str,
+    current_user: User = Depends(get_current_user),
+    _: None = Depends(require_role("member")),
+    db: Session = Depends(get_db),
+):
+    online_ids = await workspace_service.list_online_members(db, workspace_id)
+    return {"online_user_ids": online_ids}
 
 
 @router.post("/{workspace_id}/members/{user_id}/role")
@@ -93,6 +105,24 @@ def change_role(
         raise HTTPException(status_code=404, detail=str(e))
     return {"status": "role updated"}
 
+
+
+@router.post("/{workspace_id}/transfer-ownership")
+def transfer_ownership(
+    workspace_id: str, payload: TransferOwnershipRequest,
+    current_user: User = Depends(get_current_user),
+    _: None = Depends(require_role("owner")),
+    db: Session = Depends(get_db),
+):
+    try:
+        workspace_service.transfer_ownership(db, workspace_id, str(payload.new_owner_id), current_user.id)
+    except PermissionDeniedError as e:
+        raise HTTPException(status_code=403, detail=str(e))
+    except NotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except ValidationError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    return {"status": "ownership transferred"}
 
 
 @router.delete("/{workspace_id}/members/{user_id}")

@@ -45,6 +45,33 @@ services:
       timeout: 5s
       retries: 5
 
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    command: python -m app.workers.worker_main
+    env_file:
+      - .env
+    environment:
+      # Override host-facing values from .env with in-network service names —
+      # the worker never serves browser-facing URLs (unlike the API's
+      # presigned MinIO URLs), so it's free to talk to services by name.
+      DATABASE_URL: postgresql+asyncpg://collabai:collabai@postgres:5432/collabai
+      REDIS_URL: redis://redis:6379/0
+      MINIO_ENDPOINT: minio:9000
+    volumes:
+      - ./backend:/app
+      - hf-cache:/root/.cache/huggingface
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      minio:
+        condition: service_healthy
+
 volumes:
   postgres-data:
   minio-data:
+  hf-cache:

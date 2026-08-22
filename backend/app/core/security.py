@@ -70,3 +70,13 @@ def hash_refresh_token(token: str) -> str:
 
 def verify_refresh_token(token: str, hashed: str) -> bool:
     return hash_refresh_token(token) == hashed
+
+
+def generate_password_reset_token() -> str:
+    """Opaque random token e-mailed to the user; only its hash is stored,
+    same rationale as generate_refresh_token above."""
+    return secrets.token_urlsafe(32)
+
+
+def hash_password_reset_token(token: str) -> str:
+    return hashlib.sha256(token.encode()).hexdigest()

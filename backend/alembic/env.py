@@ -13,6 +13,7 @@ from app.models.invite import Invite
 from app.models.project import Project
 from app.models.project_permission import ProjectPermission
 from app.models.refresh_token import RefreshToken
+from app.models.password_reset_token import PasswordResetToken
 from app.models.folder import Folder
 from app.models.document import Document
 from app.models.document_version import DocumentVersion
@@ -23,9 +24,11 @@ from app.models.ai_message import AIMessage
 from app.models.conversation import Conversation
 from app.models.conversation_participant import ConversationParticipant
 from app.models.message import Message
+from app.models.conversation_read import ConversationRead
 from app.models.notification import Notification
 from app.models.comment import Comment
 from app.models.audit_log import AuditLog
+from app.models.document_permission import DocumentPermission
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

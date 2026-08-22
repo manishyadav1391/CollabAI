@@ -1,8 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { SearchIcon } from "@/components/dashboard/icons";
 import { UserMenu } from "@/components/dashboard/UserMenu";
+import { NotificationBell } from "@/components/notifications/NotificationBell";
+import { SearchModal } from "@/components/dashboard/SearchModal";
 
 const SECTION_LABELS: Record<string, string> = {
   dashboard: "Home",
@@ -16,6 +19,18 @@ export function Topbar({ workspaceId, workspaceName }: { workspaceId: string; wo
   const pathname = usePathname();
   const segment = pathname.split("/").filter(Boolean)[2];
   const section = SECTION_LABELS[segment] ?? "Home";
+  const [searchOpen, setSearchOpen] = useState(false);
+
+  useEffect(() => {
+    function onKey(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
 
   return (
     <header
@@ -29,18 +44,22 @@ export function Topbar({ workspaceId, workspaceName }: { workspaceId: string; wo
 
       <button
         type="button"
+        onClick={() => setSearchOpen(true)}
         className="mx-auto flex w-full max-w-[420px] items-center gap-[10px] rounded-[100px] border border-[var(--border)] bg-[var(--panel-2)] px-4 py-[9px] text-left text-[13.5px] text-[var(--faint)] transition-colors hover:border-[var(--border-2)] hover:bg-white"
       >
         <SearchIcon size={15} stroke="var(--faint)" />
-        <span className="flex-1 truncate">Search documents, chats, or projects…</span>
+        <span className="flex-1 truncate">Search documents…</span>
         <span className="rounded-[6px] border border-[var(--border-2)] bg-white px-[6px] py-[2px] font-mono text-[10px] font-bold text-[var(--faint)]">
           Ctrl K
         </span>
       </button>
 
-      <div className="shrink-0">
+      <div className="flex shrink-0 items-center gap-2">
+        <NotificationBell />
         <UserMenu workspaceId={workspaceId} />
       </div>
+
+      <SearchModal open={searchOpen} onClose={() => setSearchOpen(false)} workspaceId={workspaceId} />
     </header>
   );
 }

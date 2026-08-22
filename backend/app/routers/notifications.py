@@ -26,3 +26,20 @@ def mark_read(
 ):
     notification_service.mark_read(db, notification_id, current_user.id)
     return {"status": "marked read"}
+
+
+@router.get("/unread-count")
+def unread_count(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    return {"count": notification_service.get_unread_count(db, current_user.id)}
+
+
+@router.put("/mark-all-read")
+def mark_all_read(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    notification_service.mark_all_read(db, current_user.id)
+    return {"status": "marked read"}

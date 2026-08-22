@@ -4,36 +4,35 @@ from app.models.ai_conversation import AIConversation
 from app.models.ai_message import AIMessage
 
 
-def create_conversation(db: Session, user_id, project_id: str) -> AIConversation:
-    conversation = AIConversation(user_id=user_id, project_id=project_id)
+def create_conversation(db: Session, user_id, project_id: str | None, workspace_id: str | None = None) -> AIConversation:
+    conversation = AIConversation(user_id=user_id, project_id=project_id, workspace_id=workspace_id)
     db.add(conversation)
     db.commit()
     db.refresh(conversation)
     return conversation
 
 
-def get_conversation(db: Session, user_id, project_id: str, conversation_id: str) -> AIConversation | None:
-    return (
-        db.query(AIConversation)
-        .filter(
-            AIConversation.id == conversation_id,
-            AIConversation.user_id == user_id,
-            AIConversation.project_id == project_id,
-        )
-        .first()
+def _scope_filter(query, project_id: str | None, workspace_id: str | None):
+    if project_id:
+        return query.filter(AIConversation.project_id == project_id)
+    return query.filter(AIConversation.workspace_id == workspace_id, AIConversation.project_id.is_(None))
+
+
+def get_conversation(db: Session, user_id, project_id: str | None, workspace_id: str | None, conversation_id: str) -> AIConversation | None:
+    query = db.query(AIConversation).filter(
+        AIConversation.id == conversation_id,
+        AIConversation.user_id == user_id,
     )
+    return _scope_filter(query, project_id, workspace_id).first()
 
 
-def list_conversations(db: Session, user_id, project_id: str) -> list[dict]:
+def list_conversations(db: Session, user_id, project_id: str | None, workspace_id: str | None = None) -> list[dict]:
     """One summary per conversation for the sidebar: titled by its first
     question, ordered by most recent activity. A conversation with no
     messages yet (shouldn't normally happen — created and abandoned before
     the first ask completed) is skipped, since there's nothing to title it."""
-    conversations = (
-        db.query(AIConversation)
-        .filter(AIConversation.user_id == user_id, AIConversation.project_id == project_id)
-        .all()
-    )
+    query = db.query(AIConversation).filter(AIConversation.user_id == user_id)
+    conversations = _scope_filter(query, project_id, workspace_id).all()
 
     summaries = []
     for conversation in conversations:

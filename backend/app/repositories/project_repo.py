@@ -23,6 +23,20 @@ def get_by_id(db: Session, project_id: str) -> Project | None:
     return db.query(Project).filter(Project.id == project_id).first()
 
 
+def list_deleted_projects(db: Session, workspace_id: str) -> list[Project]:
+    return (
+        db.query(Project)
+        .filter(Project.workspace_id == workspace_id, Project.deleted_at.is_not(None))
+        .order_by(Project.deleted_at.desc())
+        .all()
+    )
+
+
+def get_permitted_user_ids(db: Session, project_id: str) -> list[str]:
+    rows = db.query(ProjectPermission).filter(ProjectPermission.project_id == project_id).all()
+    return [str(r.user_id) for r in rows]
+
+
 def set_permissions(db: Session, project_id: str, user_ids: list[str]) -> None:
     db.query(ProjectPermission).filter(ProjectPermission.project_id == project_id).delete()
     for uid in user_ids:

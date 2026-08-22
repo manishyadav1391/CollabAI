@@ -42,6 +42,7 @@ class Settings(BaseSettings):
     jwt_secret: str = "change-me-to-a-long-random-string"
     access_token_expiry_minutes: int = 15
     refresh_token_expiry_days: int = 30
+    password_reset_token_expiry_minutes: int = 60
 
     # --- Object storage (required from Phase 2) ---
     minio_endpoint: str = "localhost:9000"

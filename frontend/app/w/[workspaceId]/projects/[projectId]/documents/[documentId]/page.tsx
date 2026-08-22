@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { Group, Panel, Separator } from "react-resizable-panels";
@@ -12,6 +12,7 @@ import { TOPBAR_HEIGHT } from "@/components/dashboard/Topbar";
 import { ArrowLeftIcon } from "@/components/documents/icons";
 import { DocumentStage } from "@/components/viewer/DocumentStage";
 import { CommentsPanel } from "@/components/viewer/CommentsPanel";
+import { VersionHistoryModal } from "@/components/viewer/VersionHistoryModal";
 import { MessageIcon, SparkleIcon } from "@/components/ui/icons";
 
 const MAX_QUOTE_LENGTH = 300;
@@ -39,9 +40,11 @@ function DocumentViewerPageInner() {
   const searchParams = useSearchParams();
   const initialPage = searchParams.get("page") ? Number(searchParams.get("page")) : null;
   const initialComment = quoteFromParam(searchParams.get("quote"));
-  const { documents, loading } = useDocuments(projectId);
+  const { documents, loading, reuploadFile, reload } = useDocuments(projectId);
   const { memberName } = useProjectContext(workspaceId, projectId);
   const currentUserId = getCurrentUserId();
+  const [versionHistoryOpen, setVersionHistoryOpen] = useState(false);
+  const reuploadInputRef = useRef<HTMLInputElement>(null);
 
   const doc = documents.find((d) => d.id === documentId);
   const filesHref = `/w/${workspaceId}/projects/${projectId}/documents`;
@@ -88,6 +91,31 @@ function DocumentViewerPageInner() {
           <StatusBadge status={doc.current_version.status} reason={doc.current_version.failure_reason} />
         )}
 
+        <button
+          type="button"
+          onClick={() => setVersionHistoryOpen(true)}
+          className="flex shrink-0 items-center gap-[6px] rounded-[8px] px-[10px] py-[6px] text-[12.5px] font-semibold text-[var(--muted)] transition-colors hover:bg-[var(--panel-2)] hover:text-[var(--text)]"
+        >
+          Version history
+        </button>
+        <button
+          type="button"
+          onClick={() => reuploadInputRef.current?.click()}
+          className="flex shrink-0 items-center gap-[6px] rounded-[8px] px-[10px] py-[6px] text-[12.5px] font-semibold text-[var(--muted)] transition-colors hover:bg-[var(--panel-2)] hover:text-[var(--text)]"
+        >
+          Upload new version
+        </button>
+        <input
+          ref={reuploadInputRef}
+          type="file"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) reuploadFile(doc.id, doc.folder_id, file);
+            e.target.value = "";
+          }}
+        />
+
         <span className="h-5 w-px shrink-0 bg-[var(--border)]" />
 
         <Link
@@ -126,6 +154,13 @@ function DocumentViewerPageInner() {
           />
         </Panel>
       </Group>
+
+      <VersionHistoryModal
+        documentId={doc.id}
+        open={versionHistoryOpen}
+        onClose={() => setVersionHistoryOpen(false)}
+        onRestored={reload}
+      />
     </div>
   );
 }

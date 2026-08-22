@@ -73,5 +73,9 @@ export function useWorkspaceProjects(workspaceId: string) {
     setProjects((prev) => [{ ...project, docCount: 0, lastActive: null }, ...prev]);
   }
 
-  return { members, projects, recentDocuments, loading, reload: load, addProject };
+  function removeProject(projectId: string) {
+    setProjects((prev) => prev.filter((p) => p.id !== projectId));
+  }
+
+  return { members, projects, recentDocuments, loading, reload: load, addProject, removeProject };
 }

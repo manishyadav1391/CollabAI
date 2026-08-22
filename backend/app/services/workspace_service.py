@@ -80,6 +80,15 @@ def list_members(db: Session, workspace_id: str):
     return result
 
 
+async def list_online_members(db: Session, workspace_id: str) -> list[str]:
+    """FR-CHAT-04 — which of this workspace's members currently have a live
+    `/ws/notifications` connection (see app/core/presence.py)."""
+    from app.core import presence
+    member_user_ids = [str(m.user_id) for m in workspace_repo.list_members(db, workspace_id)]
+    online = await presence.get_online_user_ids(member_user_ids)
+    return sorted(online)
+
+
 def change_role(db: Session, workspace_id: str, target_user_id: str, new_role: str, actor_id):
     membership = workspace_repo.get_membership(db, workspace_id, target_user_id)
     if not membership:
@@ -91,6 +100,28 @@ def change_role(db: Session, workspace_id: str, target_user_id: str, new_role: s
     db.commit()
     log_action(db, actor_id, "role_changed", "workspace_member", target_user_id,
                {"workspace_id": workspace_id, "old_role": old_role, "new_role": new_role})
+
+
+def transfer_ownership(db: Session, workspace_id: str, new_owner_id: str, actor_id):
+    ws = workspace_repo.get_by_id(db, workspace_id)
+    if not ws:
+        raise NotFoundError("Workspace not found")
+    if str(ws.owner_id) != str(actor_id):
+        raise PermissionDeniedError("Only the Owner can transfer ownership")
+    if str(new_owner_id) == str(actor_id):
+        raise ValidationError("Already the owner")
+
+    new_owner_membership = workspace_repo.get_membership(db, workspace_id, new_owner_id)
+    if not new_owner_membership:
+        raise NotFoundError("Member not found")
+
+    old_owner_membership = workspace_repo.get_membership(db, workspace_id, actor_id)
+    old_owner_membership.role = "admin"
+    new_owner_membership.role = "owner"
+    ws.owner_id = new_owner_id
+    db.commit()
+    log_action(db, actor_id, "ownership_transferred", "workspace", workspace_id,
+               {"new_owner_id": str(new_owner_id)})
 
 
 def remove_member(db: Session, workspace_id: str, target_user_id: str, actor_id):

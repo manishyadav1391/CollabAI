@@ -8,6 +8,7 @@ import { CitationCard } from "@/components/ai/CitationCard";
 
 export type Citation = {
   document_id: string;
+  project_id?: string | null;
   filename: string;
   page_or_section: string | null;
   chunk_text?: string | null;
@@ -120,7 +121,7 @@ export function AnswerBubble({
                   filename={c.filename}
                   pageOrSection={c.page_or_section}
                   workspaceId={workspaceId}
-                  projectId={projectId}
+                  projectId={c.project_id ?? projectId}
                   documentId={c.document_id}
                   quote={c.chunk_text ?? null}
                 />

@@ -23,7 +23,7 @@ from app.models.document import Document
 from app.models.document_version import DocumentVersion
 from app.models.document_chunk import DocumentChunk
 from app.models.processing_job import ProcessingJob
-from app.services.notification_service import create_notification
+from app.services.notification_service import enqueue_notification
 
 CHUNK_SIZE = 800
 CHUNK_OVERLAP = 100
@@ -87,6 +87,15 @@ def run(document_id: str, version_id: str, job_id: str) -> None:
         document = db.query(Document).filter(Document.id == document_id).first()
         version = db.query(DocumentVersion).filter(DocumentVersion.id == version_id).first()
 
+        from app.models.project import Project
+        project = db.query(Project).filter(Project.id == document.project_id).first()
+        notification_context = {
+            "document_id": str(document.id),
+            "project_id": str(document.project_id),
+            "workspace_id": str(project.workspace_id) if project else None,
+            "filename": version.filename,
+        }
+
         try:
             file_bytes = storage.download_file(version.object_storage_key)
             text_pages = extract_text_pages(file_bytes, version.filename)
@@ -112,18 +121,14 @@ def run(document_id: str, version_id: str, job_id: str) -> None:
             version.status = "ready"
             job.status = "completed"
             db.commit()
-            create_notification(db, document.created_by, "processing_done", {
-                "document_id": str(document.id), "filename": version.filename,
-            })
+            enqueue_notification(document.created_by, "processing_done", notification_context)
         except Exception as e:
             db.rollback()
             version.status = "processing_failed"
             version.failure_reason = str(e)
             job.status = "failed"
-            create_notification(db, document.created_by, "processing_failed", {
-                "document_id": str(document.id), "filename": version.filename,
-            })
             db.commit()
+            enqueue_notification(document.created_by, "processing_failed", notification_context)
 
     finally:
         db.close()

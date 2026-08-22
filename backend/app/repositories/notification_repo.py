@@ -36,3 +36,20 @@ def mark_emailed(db: Session, notification_id) -> None:
     if notif:
         notif.emailed_at = datetime.now(timezone.utc)
         db.commit()
+
+
+def count_unread(db: Session, user_id) -> int:
+    return (
+        db.query(Notification)
+        .filter(Notification.user_id == user_id, Notification.read_at.is_(None))
+        .count()
+    )
+
+
+def mark_all_read(db: Session, user_id) -> None:
+    (
+        db.query(Notification)
+        .filter(Notification.user_id == user_id, Notification.read_at.is_(None))
+        .update({"read_at": datetime.now(timezone.utc)})
+    )
+    db.commit()

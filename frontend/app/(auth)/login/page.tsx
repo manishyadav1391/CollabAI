@@ -84,6 +84,10 @@ function LoginForm() {
             />
           </Field>
 
+          <Link href="/forgot-password" className="-mt-1 self-end text-[12.5px] font-semibold text-[var(--accent-soft)]">
+            Forgot password?
+          </Link>
+
           {error && <Banner>{error}</Banner>}
 
           <Button type="submit" disabled={loading} className="mt-1 w-full">

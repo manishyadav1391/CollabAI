@@ -12,12 +12,14 @@ export function ProjectListRow({
   workspaceId,
   isAdmin,
   index,
+  onDeleteRequested,
 }: {
   project: ProjectSummary;
   members: Member[];
   workspaceId: string;
   isAdmin: boolean;
   index: number;
+  onDeleteRequested?: () => void;
 }) {
   return (
     <Link
@@ -32,7 +34,12 @@ export function ProjectListRow({
       <span className="text-[12.5px] text-[var(--faint)]">
         {project.lastActive ? formatRelativeTime(project.lastActive) : "—"}
       </span>
-      <ProjectMenu workspaceId={workspaceId} projectId={project.id} isAdmin={isAdmin} />
+      <ProjectMenu
+        workspaceId={workspaceId}
+        projectId={project.id}
+        isAdmin={isAdmin}
+        onDeleteRequested={onDeleteRequested}
+      />
     </Link>
   );
 }

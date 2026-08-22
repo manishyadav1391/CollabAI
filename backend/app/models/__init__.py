@@ -5,8 +5,10 @@ from app.models.invite import Invite
 from app.models.project import Project
 from app.models.project_permission import ProjectPermission
 from app.models.refresh_token import RefreshToken
+from app.models.password_reset_token import PasswordResetToken
 from app.models.folder import Folder
 from app.models.document import Document
 from app.models.document_version import DocumentVersion
 from app.models.processing_job import ProcessingJob
 from app.models.document_chunk import DocumentChunk
+from app.models.document_permission import DocumentPermission
