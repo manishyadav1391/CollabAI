@@ -8,6 +8,10 @@ docs/08-implementation-build-guide.md §5 for the build order
 """
 
 import logging
+import subprocess
+import sys
+import threading
+import time
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
@@ -23,11 +27,65 @@ configure_logging(settings.log_level)
 logger = logging.getLogger("collabai")
 
 
+class EmbeddedWorkerSupervisor:
+    """
+    Runs `python -m app.workers.worker_main` as a child process of the API,
+    restarting it if it dies. Used on hosts (e.g. FastAPI Cloud) that only
+    deploy one process — see `settings.enable_embedded_worker`.
+
+    Deliberately a subprocess, not an in-process thread: RQ's `Worker.work()`
+    installs SIGINT/SIGTERM handlers unconditionally, which only works on a
+    process's main thread, and running document-processing jobs in a plain
+    thread would mean a crash there could take the whole API down with it.
+    """
+
+    RESTART_DELAY_SECONDS = 2
+
+    def __init__(self):
+        self._stop = threading.Event()
+        self._thread: threading.Thread | None = None
+        self._proc: subprocess.Popen | None = None
+
+    def start(self):
+        self._thread = threading.Thread(target=self._run, daemon=True)
+        self._thread.start()
+
+    def stop(self):
+        self._stop.set()
+        if self._proc is not None:
+            self._proc.terminate()
+        if self._thread is not None:
+            self._thread.join(timeout=10)
+
+    def _run(self):
+        while not self._stop.is_set():
+            logger.info("embedded worker: starting app.workers.worker_main")
+            self._proc = subprocess.Popen([sys.executable, "-m", "app.workers.worker_main"])
+            exit_code = self._proc.wait()
+            if self._stop.is_set():
+                break
+            logger.warning(
+                "embedded worker: exited with code %s, restarting in %ss",
+                exit_code,
+                self.RESTART_DELAY_SECONDS,
+            )
+            time.sleep(self.RESTART_DELAY_SECONDS)
+
+
+_worker_supervisor: EmbeddedWorkerSupervisor | None = None
+
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    global _worker_supervisor
     logger.info("CollabAI API starting up (environment=%s)", settings.environment)
     storage.ensure_bucket_exists()
+    if settings.enable_embedded_worker:
+        _worker_supervisor = EmbeddedWorkerSupervisor()
+        _worker_supervisor.start()
     yield
+    if _worker_supervisor is not None:
+        _worker_supervisor.stop()
     logger.info("CollabAI API shutting down")
 
 

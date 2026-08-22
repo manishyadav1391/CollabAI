@@ -30,12 +30,9 @@ sentence-transformers
 torch
 ollama
 
-# Document processing / OCR
+# Document processing
 pypdf
 python-docx
-pymupdf
-pytesseract
-pillow
 
 # Email
 aiosmtplib

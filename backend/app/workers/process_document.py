@@ -10,9 +10,6 @@ never produce duplicates.
 
 import io
 
-import fitz  # PyMuPDF
-import pytesseract
-from PIL import Image
 from pypdf import PdfReader
 import docx as docx_lib
 
@@ -29,29 +26,19 @@ CHUNK_SIZE = 800
 CHUNK_OVERLAP = 100
 
 
-def ocr_pdf_pages(file_bytes: bytes) -> list[str]:
-    """Rasterizes each page and runs OCR — for scanned/image-only PDFs with
-    no text layer. One string per page, page order preserved."""
-    pdf = fitz.open(stream=file_bytes, filetype="pdf")
-    pages_text = []
-    for page in pdf:
-        pixmap = page.get_pixmap(dpi=300)
-        image = Image.frombytes("RGB", (pixmap.width, pixmap.height), pixmap.samples)
-        pages_text.append(pytesseract.image_to_string(image))
-    return pages_text
-
-
 def extract_text_pages(file_bytes: bytes, filename: str) -> list[tuple[int | None, str]]:
     """Returns (page_number, text) pairs so chunks can cite the exact page
     they came from. page_number is 1-based for PDFs; formats with no
     natural page concept (docx, plain text) come back as a single page
-    with page_number=None, so their citations just won't show a page."""
+    with page_number=None, so their citations just won't show a page.
+
+    Scanned/image-only PDFs (no text layer) come back empty — there's no
+    OCR fallback — and `run()`'s "no extractable text" check turns that
+    into a clear processing_failed rather than silently indexing nothing."""
     lower = filename.lower()
     if lower.endswith(".pdf"):
         reader = PdfReader(io.BytesIO(file_bytes))
         pages = [page.extract_text() or "" for page in reader.pages]
-        if not any(p.strip() for p in pages):
-            pages = ocr_pdf_pages(file_bytes)
         return [(i + 1, text) for i, text in enumerate(pages)]
     elif lower.endswith(".docx"):
         doc = docx_lib.Document(io.BytesIO(file_bytes))

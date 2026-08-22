@@ -454,11 +454,19 @@ Logout:
 
 **Single command startup (NFR-12):** `docker-compose up -d` after `.env` is populated.
 
+**FastAPI Cloud deployment:** FastAPI Cloud only deploys a single ASGI process (`fastapi deploy`) — no separate worker/cron process type, and no Dockerfile or OS-level packages (pip/uv-installed Python dependencies only). To run everything there:
+
+- `ENABLE_EMBEDDED_WORKER=true` makes the API process spawn and supervise `app.workers.worker_main` itself as a child process (see `EmbeddedWorkerSupervisor` in `app/main.py`) instead of relying on a separate `worker` container. Each API instance runs its own embedded worker, all consuming the same Redis Cloud queue — safe under autoscaling (RQ dequeues atomically), but note scale-to-zero means queued jobs sit idle until the next request wakes an instance.
+- `REDIS_URL` and `DATABASE_URL` must point at externally-reachable services (Redis Cloud, managed Postgres) rather than in-network container names.
+- OCR for scanned/image-only PDFs was dropped (`app/workers/process_document.py`) because it depended on the `tesseract-ocr` OS binary, which can't be installed on FastAPI Cloud's Python-only buildpack. Regular text-layer PDFs and DOCX are unaffected; a scanned PDF now fails processing with a clear "no extractable text" reason instead of silently OCR'ing.
+- `docker-compose.yml`'s `worker`/`redis` services remain for local dev (`ENABLE_EMBEDDED_WORKER` left `false` there) and as a fallback topology (e.g. a VPS/Render/Railway) if a future feature needs a real OS-level dependency again.
+
 ### 14.1 Required Environment Variables (`.env`)
 
 ```
 DATABASE_URL=
 REDIS_URL=
+ENABLE_EMBEDDED_WORKER=  # true only on single-process hosts (e.g. FastAPI Cloud)
 JWT_SECRET=
 ACCESS_TOKEN_EXPIRY_MINUTES=15
 REFRESH_TOKEN_EXPIRY_DAYS=30
