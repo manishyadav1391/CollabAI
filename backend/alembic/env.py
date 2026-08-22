@@ -5,6 +5,7 @@ from sqlalchemy import pool
 
 from alembic import context
 
+from app.config import get_settings
 from app.core.db import Base
 from app.models.user import User
 from app.models.workspace import Workspace
@@ -37,6 +38,13 @@ config = context.config
 # This line sets up loggers basically.
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
+
+# Always migrate the same database the app itself connects to (settings.database_url,
+# from .env) rather than whatever's hardcoded in alembic.ini — otherwise `alembic upgrade
+# head` can silently run against the wrong database when DATABASE_URL is overridden.
+config.set_main_option(
+    "sqlalchemy.url", get_settings().database_url.replace("+asyncpg", "")
+)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
