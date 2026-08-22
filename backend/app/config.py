@@ -38,6 +38,15 @@ class Settings(BaseSettings):
     # --- Redis (required from Phase 3) ---
     redis_url: str = "redis://localhost:6379/0"
 
+    # --- Worker ---
+    # When true, the API process spawns `app.workers.worker_main` itself as
+    # a child process on startup (and restarts it if it dies), instead of
+    # relying on a separately-deployed worker container. Needed on hosts
+    # (e.g. FastAPI Cloud) that only run a single deployable process — leave
+    # false anywhere the worker is already run as its own service (e.g. the
+    # `worker` container in docker-compose.yml).
+    enable_embedded_worker: bool = False
+
     # --- Auth / JWT (required from Phase 1) ---
     jwt_secret: str = "change-me-to-a-long-random-string"
     access_token_expiry_minutes: int = 15
@@ -45,10 +54,16 @@ class Settings(BaseSettings):
     password_reset_token_expiry_minutes: int = 60
 
     # --- Object storage (required from Phase 2) ---
-    minio_endpoint: str = "localhost:9000"
-    minio_access_key: str = "collabai_minio"
-    minio_secret_key: str = "change-me-minio-secret"
-    minio_bucket: str = "collabai-documents"
+    # S3-compatible: works with MinIO (local dev) or Backblaze B2 (prod)
+    # unchanged — only these values need to differ between them.
+    storage_endpoint_url: str = "http://localhost:9000"
+    storage_access_key_id: str = "collabai_minio"
+    storage_secret_access_key: str = "change-me-minio-secret"
+    storage_bucket: str = "collabai-documents"
+    storage_region: str = "us-east-1"
+    # MinIO needs path-style addressing (bucket.minio... won't resolve);
+    # Backblaze B2 expects virtual-hosted-style, so set this to false for B2.
+    storage_force_path_style: bool = True
 
     # --- AI / LLM (required from Phase 5) ---
     ollama_api_key: str = ""

@@ -1,8 +1,9 @@
 """
-MinIO (S3-compatible) client wrapper.
+S3-compatible object storage client wrapper (MinIO locally, Backblaze B2 in
+prod — same API, only the endpoint/credentials in Settings change).
 
 Generates presigned URLs so uploads/downloads go directly between the
-browser and MinIO — never through the API server's memory
+browser and the storage backend — never through the API server's memory
 (docs/04-technical-architecture.md, FR-DOC-01).
 """
 
@@ -17,25 +18,36 @@ settings = get_settings()
 
 _s3 = boto3.client(
     "s3",
-    endpoint_url=f"http://{settings.minio_endpoint}",
-    aws_access_key_id=settings.minio_access_key,
-    aws_secret_access_key=settings.minio_secret_key,
-    config=BotoConfig(signature_version="s3v4"),
-    region_name="us-east-1",
+    endpoint_url=settings.storage_endpoint_url,
+    aws_access_key_id=settings.storage_access_key_id,
+    aws_secret_access_key=settings.storage_secret_access_key,
+    config=BotoConfig(
+        signature_version="s3v4",
+        s3={"addressing_style": "path" if settings.storage_force_path_style else "virtual"},
+    ),
+    region_name=settings.storage_region,
 )
 
 
 def ensure_bucket_exists() -> None:
-    existing = [b["Name"] for b in _s3.list_buckets().get("Buckets", [])]
-    if settings.minio_bucket not in existing:
-        _s3.create_bucket(Bucket=settings.minio_bucket)
+    # head_bucket (rather than list_buckets) so this also works with a
+    # storage key scoped to just this one bucket — least-privilege prod
+    # setups (e.g. a Backblaze B2 key restricted to this bucket) can't
+    # list all buckets on the account.
+    try:
+        _s3.head_bucket(Bucket=settings.storage_bucket)
+    except ClientError as e:
+        if e.response.get("Error", {}).get("Code") in ("404", "NoSuchBucket"):
+            _s3.create_bucket(Bucket=settings.storage_bucket)
+        else:
+            raise
 
     # Allow the browser (running on localhost:3000) to PUT directly to
-    # MinIO (localhost:9000) using a presigned URL — without this, the
+    # the storage backend using a presigned URL — without this, the
     # browser's CORS preflight will be rejected.
     try:
         _s3.put_bucket_cors(
-            Bucket=settings.minio_bucket,
+            Bucket=settings.storage_bucket,
             CORSConfiguration={
                 "CORSRules": [
                     {
@@ -67,7 +79,7 @@ def ensure_bucket_exists() -> None:
 def generate_upload_url(object_key: str, expires_in: int = 900) -> str:
     return _s3.generate_presigned_url(
         "put_object",
-        Params={"Bucket": settings.minio_bucket, "Key": object_key},
+        Params={"Bucket": settings.storage_bucket, "Key": object_key},
         ExpiresIn=expires_in,
     )
 
@@ -75,12 +87,12 @@ def generate_upload_url(object_key: str, expires_in: int = 900) -> str:
 def generate_download_url(object_key: str, expires_in: int = 900) -> str:
     return _s3.generate_presigned_url(
         "get_object",
-        Params={"Bucket": settings.minio_bucket, "Key": object_key},
+        Params={"Bucket": settings.storage_bucket, "Key": object_key},
         ExpiresIn=expires_in,
     )
 
 def download_file(object_key: str) -> bytes:
-    obj = _s3.get_object(Bucket=settings.minio_bucket, Key=object_key)
+    obj = _s3.get_object(Bucket=settings.storage_bucket, Key=object_key)
     return obj["Body"].read()
 
 
@@ -90,7 +102,7 @@ def download_file(object_key: str) -> bytes:
 # memory" principle as the single-shot upload above.
 
 def create_multipart_upload(object_key: str) -> str:
-    resp = _s3.create_multipart_upload(Bucket=settings.minio_bucket, Key=object_key)
+    resp = _s3.create_multipart_upload(Bucket=settings.storage_bucket, Key=object_key)
     return resp["UploadId"]
 
 
@@ -98,7 +110,7 @@ def generate_part_upload_url(object_key: str, upload_id: str, part_number: int, 
     return _s3.generate_presigned_url(
         "upload_part",
         Params={
-            "Bucket": settings.minio_bucket, "Key": object_key,
+            "Bucket": settings.storage_bucket, "Key": object_key,
             "UploadId": upload_id, "PartNumber": part_number,
         },
         ExpiresIn=expires_in,
@@ -110,17 +122,17 @@ def list_uploaded_parts(object_key: str, upload_id: str) -> list[dict]:
     a reload/crash without re-uploading parts that already landed."""
     parts = []
     paginator = _s3.get_paginator("list_parts")
-    for page in paginator.paginate(Bucket=settings.minio_bucket, Key=object_key, UploadId=upload_id):
+    for page in paginator.paginate(Bucket=settings.storage_bucket, Key=object_key, UploadId=upload_id):
         parts.extend(page.get("Parts", []))
     return [{"part_number": p["PartNumber"], "etag": p["ETag"], "size_bytes": p["Size"]} for p in parts]
 
 
 def complete_multipart_upload(object_key: str, upload_id: str, parts: list[dict]) -> None:
     _s3.complete_multipart_upload(
-        Bucket=settings.minio_bucket, Key=object_key, UploadId=upload_id,
+        Bucket=settings.storage_bucket, Key=object_key, UploadId=upload_id,
         MultipartUpload={"Parts": [{"PartNumber": p["part_number"], "ETag": p["etag"]} for p in parts]},
     )
 
 
 def abort_multipart_upload(object_key: str, upload_id: str) -> None:
-    _s3.abort_multipart_upload(Bucket=settings.minio_bucket, Key=object_key, UploadId=upload_id)
+    _s3.abort_multipart_upload(Bucket=settings.storage_bucket, Key=object_key, UploadId=upload_id)

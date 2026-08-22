@@ -126,10 +126,12 @@ All variables below must exist in `.env` (see `.env.example` for the authoritati
 | `JWT_SECRET` | Signs access tokens — use a strong random value, never commit a real one | Phase 1 |
 | `ACCESS_TOKEN_EXPIRY_MINUTES` | Access token lifetime (default `15`) | Phase 1 |
 | `REFRESH_TOKEN_EXPIRY_DAYS` | Refresh token lifetime (default `30`) | Phase 1 |
-| `MINIO_ENDPOINT` | MinIO server address | Phase 2 |
-| `MINIO_ACCESS_KEY` | MinIO access key | Phase 2 |
-| `MINIO_SECRET_KEY` | MinIO secret key | Phase 2 |
-| `MINIO_BUCKET` | Bucket name for document storage | Phase 2 |
+| `STORAGE_ENDPOINT_URL` | S3-compatible endpoint (MinIO locally, Backblaze B2 in prod) | Phase 2 |
+| `STORAGE_ACCESS_KEY_ID` | Access key ID | Phase 2 |
+| `STORAGE_SECRET_ACCESS_KEY` | Secret access key | Phase 2 |
+| `STORAGE_BUCKET` | Bucket name for document storage | Phase 2 |
+| `STORAGE_REGION` | Storage region (e.g. `us-east-1` for MinIO, B2's region like `us-west-004`) | Phase 2 |
+| `STORAGE_FORCE_PATH_STYLE` | `true` for MinIO, `false` for Backblaze B2 | Phase 2 |
 | `ANTHROPIC_API_KEY` | LLM API key for AI Copilot answers | Phase 5 |
 | `EMBEDDING_MODEL_NAME` | Local embedding model (default `all-MiniLM-L6-v2`) | Phase 3 |
 | `EMAIL_PROVIDER` | `resend` \| `sendgrid` \| `ses` | Phase 6 |

@@ -616,3 +616,390 @@ INFO:     127.0.0.1:25255 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/d
 INFO:     127.0.0.1:52022 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/read HTTP/1.1" 200 OK
 INFO:     127.0.0.1:18877 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
 INFO:     127.0.0.1:52022 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:12685 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4420 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4420 - "OPTIONS /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44716 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:12685 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:4420 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:12685 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "OPTIONS /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8121 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8121 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8121 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8121 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8121 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8121 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8121 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8121 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 45963) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczOTAzNTQsInR5cGUiOiJhY2Nlc3MifQ.BMp4eRUsOEYz0vFBCGeu_oBzTLhbkNg1BEbVeIgJrvs" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:5626 - "OPTIONS /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50656 - "OPTIONS /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8121 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:2405 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28146 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50656 - "GET /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:8121 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57966 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:28146 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:2405 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50656 - "GET /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50656 - "OPTIONS /notifications/mark-all-read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50656 - "PUT /notifications/mark-all-read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:29228 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:29228 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50656 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:29228 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/online-members HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:29228 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:29228 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:29228 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:29228 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:29228 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:29228 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/online-members HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:29228 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50656 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50656 - "OPTIONS /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:29228 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:29228 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 64255) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczOTAzNTQsInR5cGUiOiJhY2Nlc3MifQ.BMp4eRUsOEYz0vFBCGeu_oBzTLhbkNg1BEbVeIgJrvs" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:51494 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3037 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/read HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 47547) - "WebSocket /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczOTAzNTQsInR5cGUiOiJhY2Nlc3MifQ.BMp4eRUsOEYz0vFBCGeu_oBzTLhbkNg1BEbVeIgJrvs" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:3037 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/history HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3037 - "PUT /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm/ef6d07f4-35da-424f-9db4-ab2cdff02574/read HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51494 - "GET /ws/chat/13cdd4dd-3be3-4183-9f4b-1643262cbafb/dm-threads HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 2668) - "WebSocket /ws/dm/13cdd4dd-3be3-4183-9f4b-1643262cbafb/ef6d07f4-35da-424f-9db4-ab2cdff02574?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczOTAzNTQsInR5cGUiOiJhY2Nlc3MifQ.BMp4eRUsOEYz0vFBCGeu_oBzTLhbkNg1BEbVeIgJrvs" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     connection closed
+INFO:     127.0.0.1:39134 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65451 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:22802 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:22802 - "OPTIONS /ai/conversations?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39134 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39134 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39134 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39134 - "OPTIONS /ai/conversations?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39134 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39134 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39134 - "GET /ai/conversations?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:39134 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39134 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39134 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:39134 - "GET /ai/conversations?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:32853 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45000 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53534 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32853 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:40455 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59068 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40455 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59068 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40455 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59068 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40455 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59068 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40455 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59068 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40455 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59068 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40455 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59068 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 35491) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczOTAzNTQsInR5cGUiOiJhY2Nlc3MifQ.BMp4eRUsOEYz0vFBCGeu_oBzTLhbkNg1BEbVeIgJrvs" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:59068 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40455 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59068 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40455 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31749 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11327 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42036 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21301 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59068 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:11327 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:31749 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40455 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:42036 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40455 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 33373) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczOTAzNTQsInR5cGUiOiJhY2Nlc3MifQ.BMp4eRUsOEYz0vFBCGeu_oBzTLhbkNg1BEbVeIgJrvs" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     ('127.0.0.1', 9340) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczOTAzNTQsInR5cGUiOiJhY2Nlc3MifQ.BMp4eRUsOEYz0vFBCGeu_oBzTLhbkNg1BEbVeIgJrvs" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:62878 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51631 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3004 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1060 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26960 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62878 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:20044 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51631 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1060 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3004 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26960 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3004 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:54993 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 46837) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczOTAzNTQsInR5cGUiOiJhY2Nlc3MifQ.BMp4eRUsOEYz0vFBCGeu_oBzTLhbkNg1BEbVeIgJrvs" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     127.0.0.1:45388 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54993 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3900 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44258 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59009 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40607 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45388 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54993 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:3900 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44258 - "GET /notifications HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:3900 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:59009 - "GET /workspaces HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:40607 - "GET /notifications/unread-count HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54993 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54993 - "OPTIONS /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45388 - "GET /notifications HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:44258 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:59009 - "GET /notifications/unread-count HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:40607 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:3900 - "GET /workspaces HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:54993 - "POST /auth/refresh HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54993 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3900 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54993 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54993 - "OPTIONS /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59009 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40607 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54993 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40607 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3900 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40607 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59009 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40607 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59009 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54993 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40607 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59009 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54993 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3900 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54993 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40607 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 20081) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczOTQzNjEsInR5cGUiOiJhY2Nlc3MifQ.D9oMY8D4jYGladuqRbAasbnqKigOhh_MPO8C-M4PYg0" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:23136 - "OPTIONS /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36755 - "OPTIONS /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54993 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3900 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40607 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59009 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36755 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:23136 - "GET /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:3900 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54993 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40607 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36755 - "GET /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18577 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40208 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40208 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18577 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40208 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18577 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:40208 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18577 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43362 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63289 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:2877 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:7323 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40208 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18577 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:43362 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:2877 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:63289 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:2877 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 19071) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYzUyZDI4YS04YjRjLTQyODQtODZjMy1mMGI5N2Q2NDc4YjYiLCJleHAiOjE3ODczOTQzNjEsInR5cGUiOiJhY2Nlc3MifQ.D9oMY8D4jYGladuqRbAasbnqKigOhh_MPO8C-M4PYg0" [accepted]
+INFO:     connection open
+INFO:     connection closed
+INFO:     127.0.0.1:65103 - "OPTIONS /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65103 - "POST /auth/login HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65103 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33390 - "OPTIONS /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33390 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33390 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33390 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18032 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65103 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33390 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18032 - "OPTIONS /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65103 - "OPTIONS /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33390 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18032 - "OPTIONS /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18032 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33390 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65103 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34593 - "OPTIONS /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18032 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65103 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33390 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34113 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:15583 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:18032 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:33390 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:34593 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 10787) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczOTQ4NzQsInR5cGUiOiJhY2Nlc3MifQ.V15kYXcAuFUZbLJdVfnONLF-am96hVj_LpWuW6G5B60" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:34593 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:10365 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 11614) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczOTQ4NzQsInR5cGUiOiJhY2Nlc3MifQ.V15kYXcAuFUZbLJdVfnONLF-am96hVj_LpWuW6G5B60" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:50092 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59547 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32414 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50092 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26598 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:10365 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59547 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:32414 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26598 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50092 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50092 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50092 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50092 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26598 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:26598 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50092 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50092 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:59684 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59684 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59684 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59684 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59684 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59684 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59684 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:59684 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62170 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54918 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:40893 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 25964) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczOTQ4NzQsInR5cGUiOiJhY2Nlc3MifQ.V15kYXcAuFUZbLJdVfnONLF-am96hVj_LpWuW6G5B60" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:54918 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36733 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54918 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36733 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54918 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44808 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44808 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54918 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44808 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:54918 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:44808 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36733 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:36733 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:32642 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62022 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62022 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62022 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21933 - "OPTIONS /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "OPTIONS /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 56046) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczOTU3ODgsInR5cGUiOiJhY2Nlc3MifQ.yjVeKVLXNzz3f81g_r6LXh_fPP_UG1832l_LDqB93fE" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:1353 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13421 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21933 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62022 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16193 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:1353 - "GET /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:13421 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62022 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:16193 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:21933 - "GET /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:64200 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /notifications/unread-count HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     ('127.0.0.1', 50434) - "WebSocket /ws/notifications?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlZjZkMDdmNC0zNWRhLTQyNGYtOWRiNC1hYjJjZGZmMDI1NzQiLCJleHAiOjE3ODczOTU3ODgsInR5cGUiOiJhY2Nlc3MifQ.yjVeKVLXNzz3f81g_r6LXh_fPP_UG1832l_LDqB93fE" [accepted]
+INFO:     connection open
+INFO:     127.0.0.1:64200 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64200 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52771 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53367 - "GET /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52771 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52771 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52771 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52771 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52771 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52771 - "OPTIONS /documents/upload-url HTTP/1.1" 200 OK
+INFO:     127.0.0.1:52771 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "POST /documents/upload-url HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "OPTIONS /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "POST /documents/upload-url HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     connection closed
+INFO:     127.0.0.1:45019 - "GET /workspaces HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /documents?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /folders?project_id=13cdd4dd-3be3-4183-9f4b-1643262cbafb HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/projects HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /notifications HTTP/1.1" 200 OK
+INFO:     127.0.0.1:45019 - "GET /workspaces/53cd90bb-d44b-45bd-9d9c-11e16fe1843c/members HTTP/1.1" 200 OK

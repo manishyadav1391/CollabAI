@@ -16,6 +16,9 @@ services:
       timeout: 5s
       retries: 5
 
+  # Optional local-dev broker. Not required once REDIS_URL in .env points
+  # at Redis Cloud — kept here as a fallback: point REDIS_URL back at
+  # redis://redis:6379/0 to use it again.
   redis:
     image: redis:7-alpine
     restart: unless-stopped
@@ -27,6 +30,14 @@ services:
       timeout: 5s
       retries: 5
 
+  # Optional local-dev object store. Not required once STORAGE_ENDPOINT_URL
+  # in .env points at Backblaze B2 — kept here as a fallback: point
+  # STORAGE_ENDPOINT_URL back at http://localhost:9000 (for the host-run
+  # API) to use it again. Note the worker container can't resolve
+  # "localhost" back to the host, so switching the worker to this container
+  # needs its own override, e.g. `STORAGE_ENDPOINT_URL: http://minio:9000`
+  # under worker.environment below (removed now that the default is Backblaze,
+  # where the same public URL works for both host and container).
   minio:
     image: minio/minio:latest
     restart: unless-stopped
@@ -56,10 +67,11 @@ services:
     environment:
       # Override host-facing values from .env with in-network service names —
       # the worker never serves browser-facing URLs (unlike the API's
-      # presigned MinIO URLs), so it's free to talk to services by name.
+      # presigned upload/download URLs), so it's free to talk to services
+      # by name. STORAGE_ENDPOINT_URL and REDIS_URL are left as-is from
+      # .env: whether that's MinIO/local redis or Backblaze/Redis Cloud,
+      # it's the same URL for host and container.
       DATABASE_URL: postgresql+asyncpg://collabai:collabai@postgres:5432/collabai
-      REDIS_URL: redis://redis:6379/0
-      MINIO_ENDPOINT: minio:9000
     volumes:
       - ./backend:/app
       - hf-cache:/root/.cache/huggingface
